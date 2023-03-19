@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
-import { PublicRoutes } from "../components/router"
+import { PrivateRoutes, PublicRoutes } from "../../router"
 
-import Form from "../components/login/Form"
+import Form from "./components/Form"
 
 
 
@@ -17,7 +17,7 @@ function Login() {
 
         <Form />
 
-        <p className="font-mono text-sm">¿No tenes cuenta? <Link to={`/${PublicRoutes.REGISTER}`} className="font-mono text-sm text-blue-400">Registrate</Link></p>
+        <p className="font-mono text-sm">¿No tenes cuenta? <Link to={`${PrivateRoutes.PRIVATE}/${PublicRoutes.REGISTER}`} className="font-mono text-sm text-blue-400">Registrate</Link></p>
       </div>
     </div>
   )

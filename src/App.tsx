@@ -1,14 +1,21 @@
 import { Navigate, Route, Routes } from "react-router"
 import { BrowserRouter } from "react-router-dom"
 
+/** Router */
+import { AuthGuard, Private, PrivateRoutes } from "./router"
 
-import { AuthGuard, Private, PrivateRoutes } from "./components/router"
+/** Layouts */
+import Layout from "./components/layouts/Layout"
 
-import Layout from "./components/Layout"
+/** Pages */
+import NotFound from "./pages/not-found/404"
+import Login from "./pages/login/Login"
+import Register from "./pages/register/Register"
 
-import NotFound from "./pages/404"
-import Login from "./pages/Login"
-import Register from "./pages/Register"
+/** Toasttify */
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import RedirectLogin from "./router/RedirectLogin"
 
 function App() {
 
@@ -20,13 +27,17 @@ function App() {
 
           <Routes>
 
+
             <Route path="/" element={<Navigate to={PrivateRoutes.PRIVATE} />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/register" element={<Register />} />
+
+            <Route element={<RedirectLogin />}>
+              <Route path="/login" element={<Login />} />
+            </Route>
 
             <Route element={<AuthGuard />}>
-              <Route path={`${PrivateRoutes.PRIVATE}/*`} element={<Private />} />
+              <Route path={`/${PrivateRoutes.PRIVATE}/*`} element={<Private />} />
             </Route>
 
           </Routes>
@@ -34,6 +45,18 @@ function App() {
         </Layout>
 
       </BrowserRouter>
+
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="light"
+      />
     </div>
   )
 }

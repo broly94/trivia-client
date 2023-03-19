@@ -5,7 +5,11 @@ import { AppState } from '../../redux/store/store'
 
 function Navbar() {
 
-    const userTokenLogin = useSelector((state: AppState) => state.userLogin.token)
+    const userTokenLogin = localStorage.getItem('user')
+
+    const HandleSingUp = () => {
+        localStorage.removeItem('user')
+    }
 
     return (
         <nav className='bg-zinc-900 grid grid-cols-2 p-2 border-b-1 border-yellow-500 shadow-lg w-full sticky top-0' id="navigation">
@@ -32,7 +36,7 @@ function Navbar() {
                             </li>
 
                             <li className='px-1'>
-                                <NavLink to="/logout" className="hover:transition-colors p-3 rounded-md hover:bg-yellow-500 hover:text-zinc-800 font-semibold font-mono">Salir</NavLink>
+                                <NavLink to="/login" className="hover:transition-colors p-3 rounded-md hover:bg-yellow-500 hover:text-zinc-800 font-semibold font-mono" onClick={HandleSingUp}>Salir</NavLink>
                             </li>
 
                         </ul>

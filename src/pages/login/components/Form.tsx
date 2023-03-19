@@ -1,13 +1,25 @@
 import { Formik } from "formik"
+import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { setUser } from "../../../redux/features/user/user.slice"
 
-interface initialValueForm {
-    email?: string,
-    password?: string
-}
+import { userAuth } from "../../../api/user/user.auth"
+
+import { INITIAL_VALUE_FORM } from "../models/interfaces"
+
+import FormikValidate from "./FormikValidate"
+import Toast from "../../../components/toast/Toast"
+
 
 function Form() {
 
-    const INITIAL_VALUE_FORM: initialValueForm = { email: "", password: '' }
+    // const [errorRequest, setErrorRequest] = useState(false)
+
+    const dispatch = useDispatch()
+
+    const navigate = useNavigate()
+
+    
 
     const errorMessages = (message: string | boolean) => {
         return (
@@ -16,31 +28,21 @@ function Form() {
     }
 
     return (
+
         <Formik
             initialValues={INITIAL_VALUE_FORM}
-            validate={values => {
-
-                const errors: initialValueForm = {}
-
-                if (!values.email) {
-                    errors.email = 'El email es requerido'
-                } else if (!/^.{3,}$/.test(values.email)) {
-                    errors.email = 'El email debe tener al menos 3 caracteres'
-                } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-                    errors.email = 'Ingrese un email valido'
+            validate={values => FormikValidate(values)}
+            onSubmit={async (values, { resetForm, setSubmitting }) => {
+                try {
+                    const {data} = await userAuth(values)
+                     setSubmitting(true)
+                     dispatch(setUser(data.userLogin))
+                     navigate('/private/home')
+                } catch (error) {
+                    resetForm()
+                    console.log(error)
+                    setSubmitting(false)
                 }
-
-                if (!values.password) {
-                    errors.password = 'El password es requerido'
-                } else if (!/^.{3,}$/.test(values.password)) {
-                    errors.password = 'La contraseña debe tener como minimo 3 caracteres'
-                }
-
-                return errors
-            }}
-            onSubmit={(values, { resetForm, setSubmitting }) => {
-                setSubmitting(false)
-                resetForm()
             }}
         >
             {({ values, errors, touched, handleChange, handleBlur, isSubmitting, handleSubmit }) => (
@@ -69,8 +71,9 @@ function Form() {
                     {touched.password && errors.password && errorMessages(errors.password!)}
 
                     <button className="border-2 p-2 text-md font-mono hover:bg-yellow-500 hover:text-black transition-colors" type="submit" disabled={isSubmitting}>Entrar</button>
-                </form>
 
+
+                </form>
             )}
 
         </Formik>
@@ -78,3 +81,5 @@ function Form() {
 }
 
 export default Form
+
+{/* <Toast isSuccess={false} messageError={"Error al ingresar. Intente de nuevo"} /> */}
