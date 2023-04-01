@@ -1,31 +1,30 @@
+import { Suspense, lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import NotFound from '../pages/not-found/404'
-import Dashboard from '../pages/dashboard/Dashboard'
-import Game from '../pages/game/Game'
-import Home from '../pages/home/Home'
-import Footer from '../components/layouts/Footer'
-import Navbar from '../components/layouts/Navbar'
-
+import Loader from '../components/loader/Loader.loader'
+import LayoutPrivate from '../components/layouts/LayoutPrivate'
 import { PrivateRoutes } from './routes'
 
-interface Props {
-  children: JSX.Element | JSX.Element[]
-}
+const NotFound = lazy(() => import("../pages/not-found/404"))
+const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
+const Game = lazy(() => import('../pages/game/Game'))
+const GameCategory = lazy(() => import('../pages/game/GameCategory'))
+const Home = lazy(() => import('../pages/home/Home'))
 
 function Private() {
   return (
-    <>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Navigate to={PrivateRoutes.HOME} />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </>
+    <Suspense fallback={<Loader />}>
+      <LayoutPrivate>
+        <Routes>
+          <Route path="/" element={<Navigate to={PrivateRoutes.HOME} />} />
+          <Route path={`/${PrivateRoutes.HOME}`} element={<Home />} />
+          <Route path={`/${PrivateRoutes.DASHBOARD}`} element={<Dashboard />} />
+          <Route path={`/${PrivateRoutes.GAME}`} element={<Game />} />
+          <Route path={`/${PrivateRoutes.GAME}/${PrivateRoutes.CATEGORY}/:category`} element={<GameCategory />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </LayoutPrivate>
+    </Suspense>
 
   )
 }

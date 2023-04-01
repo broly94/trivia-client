@@ -1,63 +1,57 @@
-import { Navigate, Route, Routes } from "react-router"
+import { Suspense, lazy } from "react"
+import { Route, Routes } from "react-router"
 import { BrowserRouter } from "react-router-dom"
 
 /** Router */
-import { AuthGuard, Private, PrivateRoutes } from "./router"
+import { AuthGuard, NotGuard, Private, Public, PrivateRoutes } from "./router"
 
 /** Layouts */
-import Layout from "./components/layouts/Layout"
-
-/** Pages */
-import NotFound from "./pages/not-found/404"
-import Login from "./pages/login/Login"
-import Register from "./pages/register/Register"
+// import Layout from "./components/layouts/Layout"
 
 /** Toasttify */
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import RedirectLogin from "./router/RedirectLogin"
+
+/** Loader */
+import Loader from "./components/loader/Loader.loader"
 
 function App() {
 
   return (
-    <div className="flex flex-col h-screen">
-      <BrowserRouter>
+    <Suspense fallback={<Loader />}>
+      <main className="flex h-screen w-full">
 
-        <Layout>
+        <BrowserRouter>
 
-          <Routes>
+            <Routes>
 
+             {/** Public Routes */}
+             <Route element={<NotGuard />}>
+                <Route path="/*" element={<Public />} />
+             </Route>
 
-            <Route path="/" element={<Navigate to={PrivateRoutes.PRIVATE} />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/register" element={<Register />} />
+              {/** Private Routes */}
+              <Route element={<AuthGuard />}>
+                <Route path={`/${PrivateRoutes.PRIVATE}/*`} element={<Private />} />
+              </Route>
 
-            <Route element={<RedirectLogin />}>
-              <Route path="/login" element={<Login />} />
-            </Route>
+            </Routes>
 
-            <Route element={<AuthGuard />}>
-              <Route path={`/${PrivateRoutes.PRIVATE}/*`} element={<Private />} />
-            </Route>
+        </BrowserRouter>
 
-          </Routes>
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          theme="dark"
+        />
 
-        </Layout>
-
-      </BrowserRouter>
-
-      <ToastContainer
-        position="top-left"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        theme="light"
-      />
-    </div>
+      </main>
+    </Suspense>
   )
 }
 

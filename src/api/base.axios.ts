@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const baseAxios = axios.create({
-    // baseURL: `${import.meta.env.BASE_URL}`,
+    // baseURL: `https://trivia-backend-app.onrender.com`,
     baseURL: 'http://localhost:3002',
     headers: {
         "Content-Type": "application/json",

@@ -1,30 +1,44 @@
 import { Formik } from "formik"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
+import { AxiosResponse } from "axios"
+
 import { setUser } from "../../../redux/features/user/user.slice"
+import { userAuth } from "../../../api/services/auth/auth.service"
 
-import { userAuth } from "../../../api/user/user.auth"
-
+import { UserAuth } from "../../../models/user/user.types"
 import { INITIAL_VALUE_FORM } from "../models/interfaces"
+import FormikValidate from "../utils/FormikValidate"
 
-import FormikValidate from "./FormikValidate"
+import { setToken } from "../../../utils/tokens.utils"
+
 import Toast from "../../../components/toast/Toast"
+
+import { ErrorMessages } from "../../../utils/components/Messages"
 
 
 function Form() {
 
-    // const [errorRequest, setErrorRequest] = useState(false)
-
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
+  
+    const handleSubmit = async (values: UserAuth, resetForm: any, setSubmitting: any) => {
+        try {
 
-    
-
-    const errorMessages = (message: string | boolean) => {
-        return (
-            <div className="bg-red-500 text-white font-mono font-medium pl-2">{message}</div>
-        )
+            setSubmitting(true)
+            const { data } = await userAuth(values) as AxiosResponse<any, any>
+            dispatch(setUser(data.userLogin))
+            setToken(data.userLogin.token)
+            navigate('/private/home')
+        } catch (error) {
+            setSubmitting(false)
+            resetForm()
+            Toast({
+                isSuccess: false,
+                messageError: "Ooops!!! algo salió mal. Intenta de nuevo"
+            })
+        }
     }
 
     return (
@@ -32,54 +46,27 @@ function Form() {
         <Formik
             initialValues={INITIAL_VALUE_FORM}
             validate={values => FormikValidate(values)}
-            onSubmit={async (values, { resetForm, setSubmitting }) => {
-                try {
-                    const {data} = await userAuth(values)
-                     setSubmitting(true)
-                     dispatch(setUser(data.userLogin))
-                     navigate('/private/home')
-                } catch (error) {
-                    resetForm()
-                    console.log(error)
-                    setSubmitting(false)
-                }
-            }}
-        >
-            {({ values, errors, touched, handleChange, handleBlur, isSubmitting, handleSubmit }) => (
+            onSubmit={(values, { resetForm, setSubmitting }) => handleSubmit(values, resetForm, setSubmitting)}
+        >{
+                ({ values, errors, touched, handleChange, isSubmitting, handleSubmit }) => (
 
-                <form className="flex flex-col gap-3 my-5" onSubmit={handleSubmit}>
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="ejemplo@gmail.com"
-                        className="p-2 rounded-sm text-black font-mono text-base"
-                        autoFocus
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.email}
-                    />
-                    {touched.email && errors.email && errorMessages(errors.email!)}
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="********"
-                        className="p-2 rounded-sm text-black font-mono text-base"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.password}
-                    />
-                    {touched.password && errors.password && errorMessages(errors.password!)}
+                    <form className="flex flex-col gap-5 my-2 pt-5" onSubmit={handleSubmit}>
 
-                    <button className="border-2 p-2 text-md font-mono hover:bg-yellow-500 hover:text-black transition-colors" type="submit" disabled={isSubmitting}>Entrar</button>
+                        <input type="email" name="email" placeholder="ejemplo@gmail.com" className="p-4 text-zinc-700 font-sans text-lg focus:outline-none bg-zinc-300" autoFocus onChange={handleChange} value={values.email} />
+                        {touched.email && errors.email && <ErrorMessages message={errors.email} />}
 
+                        <input type="password" name="password" placeholder="********" className="p-4 text-zinc-700 font-sans text-lg focus:outline-none bg-zinc-300" onChange={handleChange} value={values.password} />
+                        {touched.password && errors.password && <ErrorMessages message={errors.password} />}
 
-                </form>
-            )}
+                        <button className="border-2 border-zinc-600 p-2 text-lg font-semibold font-sans hover:bg-yellow-300 hover:text-black transition-colors" type="submit" disabled={isSubmitting}>Entrar</button>
+
+                    </form>
+                )
+            }
 
         </Formik>
+
     )
 }
 
 export default Form
-
-{/* <Toast isSuccess={false} messageError={"Error al ingresar. Intente de nuevo"} /> */}

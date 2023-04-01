@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 body {
-    background-color: #18181b;
+    background-color: #EEEEEE;
+    /* background-color: #18181b; */
 }
 
 #navigation a.active {

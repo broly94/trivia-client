@@ -3,12 +3,12 @@ export interface UserState {
     name: string,
     email: string,
     points: number
-    token: string
+    token: string,
 }
 
 export interface UserAuth {
-    email?: string
-    password?: string
+    email: string
+    password: string
 }
 
 export const UserEmptyState: UserState = {
@@ -16,7 +16,7 @@ export const UserEmptyState: UserState = {
     name: '',
     email: '',
     points: 0,
-    token: ''
+    token: '',
 }
 
 

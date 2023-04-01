@@ -1,7 +1,7 @@
 
 function NotFound() {
   return (
-    <div>NotFound</div>
+    <div className="animate__animated animate__fadeIn">NotFound</div>
   )
 }
 

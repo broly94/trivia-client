@@ -1,6 +1,7 @@
 export const PublicRoutes ={
     REGISTER: 'register',
-    LOGIN: 'login'
+    LOGIN: 'login',
+    SEND_EMAIL: 'send-email'
 }
 
 export const PrivateRoutes = {
@@ -9,4 +10,5 @@ export const PrivateRoutes = {
     GAME: 'game',
     HOME: 'home',
     RANK: 'rank',
+    CATEGORY: 'category'
 }

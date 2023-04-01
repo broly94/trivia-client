@@ -12,32 +12,28 @@ function Toast({ isSuccess, messageSuccess, messageError }: Props) {
 
   Toast = isSuccess ?
     toast.success(messageSuccess, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: "dark",
     }) :
     toast.error(messageError, {
-      position: "top-right",
+      position: "top-center",
       autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: "dark",
     });
 
 
-  return (
-    <>
-      Toast
-    </>
-  )
+  return Toast
 }
 
 export default Toast

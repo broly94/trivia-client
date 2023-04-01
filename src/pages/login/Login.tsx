@@ -1,25 +1,26 @@
 import { Link } from "react-router-dom"
-import { PrivateRoutes, PublicRoutes } from "../../router"
+import DivContacinerClassic from "../../components/DivContanerClassic"
+
+import { PublicRoutes } from "../../router"
 
 import Form from "./components/Form"
 
-
-
 function Login() {
 
-  
-
   return (
-    <div className="flex flex-col justify-center content-center w-full md:w-3/4 lg:w-2/5">
-      <h3 className="font-mono font-semibold text-3xl text-center text-white">Trivia <span className="text-yellow-500">Game</span></h3>
-      <div className="mt-10 p-16 rounded-md bg-zinc-800 text-white w-full border-2 border-zinc-700">
-        <h4 className="text-center font-mono font-bold text-2xl">Iniciar Sesión</h4>
-
+    <div className="flex flex-col justify-center w-full mx-0 my-auto">
+      <h3 className="font-mono font-semibold text-4xl text-center text-zinc-700">Trivia <span className="text-yellow-300">Game</span></h3>
+      <p className="font-sans text-sm pt-5 text-center">¿No tenes cuenta? <Link to={`/${PublicRoutes.REGISTER}`} className="font-mono text-sm text-blue-400 font-semibold">Registrate</Link></p>
+      
+      <DivContacinerClassic>
+        <h4 className="text-center font-sans uppercase text-2xl">Iniciar Sesión</h4>
         <Form />
-
-        <p className="font-mono text-sm">¿No tenes cuenta? <Link to={`${PrivateRoutes.PRIVATE}/${PublicRoutes.REGISTER}`} className="font-mono text-sm text-blue-400">Registrate</Link></p>
-      </div>
+      </DivContacinerClassic>
+      
+      <p className="font-sans text-sm pt-5 text-center">¿Perdiste tu contraseña? <Link to={`/${PublicRoutes.SEND_EMAIL}`} className="font-mono text-sm text-blue-400 font-semibold">Recuperarla</Link></p>
     </div>
+
+
   )
 
 }
