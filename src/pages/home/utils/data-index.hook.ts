@@ -10,6 +10,8 @@ export default function DataIndex() {
     const dispatch = useDispatch();
 
     const getAllCategories = async () => {
+        const dat = await getCategories() as AxiosResponse<any, any>
+        console.log(dat)
         const { data } = await getCategories() as AxiosResponse<any, any>
         dispatch(setCategory(data.category))
     }

@@ -1,30 +1,49 @@
-import { AxiosResponse } from "axios";
-import { useState } from "react";
-import { useParams, Link } from "react-router-dom"
+import { AxiosError, AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom"
 import { getAllQuestions } from "../../api/services/game/game.service";
 import { PublicRoutes } from "../../router";
+import { setQuestions, cleanState } from "../../redux/features/question/question.slice";
+import { useDispatch } from "react-redux";
 
 export default function GameCategory() {
 
-    const [level, setLevel] = useState({level: 'BASIC'})
-    
-    const { category } = useParams()
+    const [level, setLevel] = useState({ level: 'BASIC' })
 
-    const handleSubmit = async (e : React.FormEvent) => {
+    const { category } = useParams()
+    
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+
+    useEffect(() => {
+
+        return () => {
+            dispatch(cleanState())
+        }
+    })
+
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         const term = level.level
         try {
-            console.log(term)
+
             const { data } = await getAllQuestions(category!, term) as AxiosResponse<any, any>
-            
-        } catch (error) {
-            console.log(error)
-          
+            dispatch(cleanState())
+            dispatch(setQuestions(data.questions))
+        } catch (error: any | unknown | AxiosError) {
+            const { response } = error
+            console.log(response.request)
+            if (response.request.response.includes('TokenExpiredError')) {
+                localStorage.removeItem('user')
+                navigate('/login')
+            } 
         }
     }
 
     const handleChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-        setLevel({level: e.target.value})
+        setLevel({ level: e.target.value })
     }
 
     return (

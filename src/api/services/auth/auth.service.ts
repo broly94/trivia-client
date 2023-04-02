@@ -4,7 +4,9 @@ import axios from '../../base.axios'
 export const userAuth = async (user: UserAuth) => {
     
     try {
-        return await axios.post('/api/auth', user)
+        const response = await axios.post('/api/auth', user)
+        console.log(response.headers['set-cookie'])
+        return response
     } catch (error) {
         
     }
