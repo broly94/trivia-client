@@ -1,50 +1,9 @@
-import { AxiosError, AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom"
-import { getAllQuestions } from "../../api/services/game/game.service";
+import { Link } from "react-router-dom"
 import { PublicRoutes } from "../../router";
-import { setQuestions, cleanState } from "../../redux/features/question/question.slice";
-import { useDispatch } from "react-redux";
+
+import FormGameCategory from "./components/FormGameCategory";
 
 export default function GameCategory() {
-
-    const [level, setLevel] = useState({ level: 'BASIC' })
-
-    const { category } = useParams()
-    
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-
-
-    useEffect(() => {
-
-        return () => {
-            dispatch(cleanState())
-        }
-    })
-
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        const term = level.level
-        try {
-
-            const { data } = await getAllQuestions(category!, term) as AxiosResponse<any, any>
-            dispatch(cleanState())
-            dispatch(setQuestions(data.questions))
-        } catch (error: any | unknown | AxiosError) {
-            const { response } = error
-            console.log(response.request)
-            if (response.request.response.includes('TokenExpiredError')) {
-                localStorage.removeItem('user')
-                navigate('/login')
-            } 
-        }
-    }
-
-    const handleChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-        setLevel({ level: e.target.value })
-    }
 
     return (
         <div className="flex flex-col mx-0 my-auto gap-5">
@@ -63,25 +22,12 @@ export default function GameCategory() {
             </div>
 
 
-            <div className="flex flex-col gap-5 justify-centerw-full mx-0 my-auto p-5 border-2 rounded-md border-zinc-700">
-                <h4 className="font-sans font-medium text-lg">Selecciona en el nivel que quieres jugar </h4>
+            <div className="flex flex-col gap-8 justify-center w-full mx-0 my-auto p-5 border-2 rounded-md border-zinc-700">
 
-                <div className="title flex flex-row gap-3 justify-center">
+                <h4 className="font-sans font-medium text-lg">Selecciona en el nivel que quieres jugar</h4>
 
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
-                    </svg>
+                <FormGameCategory />
 
-
-                    <form onSubmit={handleSubmit}>
-                        <select className="w-24 border-2 border-zinc-500 rounded-md " name="level" id="" onChange={handleChange}>
-                            <option value="BASIC">Facil</option>
-                            <option value="MEDIUM">Medio</option>
-                            <option value="ADVANCED">Dificil</option>
-                        </select>
-                        <button type="submit"> Iniciar juego</button>
-                    </form>
-                </div>
             </div>
         </div>
     )
