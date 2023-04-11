@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Loader from '../components/loader/Loader.loader'
 import LayoutPrivate from '../components/layouts/LayoutPrivate'
 import { PrivateRoutes } from './routes'
+import GameRouter from './GameRouter'
 
 const NotFound = lazy(() => import("../pages/not-found/404"))
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
@@ -19,8 +20,12 @@ function Private() {
           <Route path="/" element={<Navigate to={PrivateRoutes.HOME} />} />
           <Route path={`/${PrivateRoutes.HOME}`} element={<Home />} />
           <Route path={`/${PrivateRoutes.DASHBOARD}`} element={<Dashboard />} />
-          <Route path={`/${PrivateRoutes.GAME}`} element={<Game />} />
           <Route path={`/${PrivateRoutes.GAME}/${PrivateRoutes.CATEGORY}/:category`} element={<GameCategory />} />
+
+          <Route element={<GameRouter />}>
+            <Route path={`/${PrivateRoutes.GAME}`} element={<Game />} />
+          </Route>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </LayoutPrivate>

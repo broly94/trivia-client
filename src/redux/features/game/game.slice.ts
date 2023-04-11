@@ -3,8 +3,8 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 
 import { IQuestion, InitialState } from "../../../pages/game/models/interfaces"
 
-const questionSlice = createSlice({
-    name: 'question',
+const gameSlice = createSlice({
+    name: 'game',
     initialState: InitialState,
     reducers: {
         getQuestions(state, action: PayloadAction<IQuestion>) {
@@ -12,13 +12,20 @@ const questionSlice = createSlice({
         },
         setQuestions(state, action: PayloadAction<IQuestion[]>){
             state.questions.push(...action.payload)
+            state.start_game = true
         },
-        cleanState(state){
+        finishGame(state){
+            state.start_game = false
+        },
+        setPoints(state, action: PayloadAction<number>){
+            
+        },
+        cleanStateQuestions(state){
             state.questions = []
         }
     }
 })
 
-export const { getQuestions, setQuestions, cleanState } = questionSlice.actions
+export const { getQuestions, setQuestions, finishGame, cleanStateQuestions } = gameSlice.actions
 
-export default questionSlice.reducer
+export default gameSlice.reducer

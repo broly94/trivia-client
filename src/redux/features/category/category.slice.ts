@@ -13,12 +13,12 @@ const categorySlice = createSlice({
         setCategory(state, action: PayloadAction<ICategory[]>){
             state.categories.push(...action.payload)
         },
-        cleanState(state){
+        cleanStateCategory(state){
             state.categories = []
         }
     }
 })
 
-export const { getCategory, setCategory, cleanState } = categorySlice.actions
+export const { getCategory, setCategory, cleanStateCategory } = categorySlice.actions
 
 export default categorySlice.reducer

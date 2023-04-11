@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import { AxiosError, AxiosResponse } from "axios"
 
 import { getCategories } from "../../../api/services/home/home.service"
-import { cleanState, setCategory } from "../../../redux/features/category/category.slice"
+import { cleanStateCategory, setCategory } from "../../../redux/features/category/category.slice"
 import { PublicRoutes } from "../../../router"
 import { useNavigate } from "react-router-dom"
 
@@ -38,9 +38,8 @@ export default function DataIndex() {
 
         getAllCategories()
 
-
         return () => {
-            dispatch(cleanState())
+            dispatch(cleanStateCategory())
         }
     }, [])
 

@@ -13,17 +13,19 @@ export interface IQuestion {
     question: string
     level: string
     points: string
-    answer: IAnser[],
+    answers: IAnser[],
     category: ICategory
 }
 
-export interface IquestionInstace {
-    questions: IQuestion[]
+export interface IGameInstace {
+    questions: IQuestion[],
+    start_game: boolean
 }
 
 
-export const InitialState: IquestionInstace = {
+export const InitialState: IGameInstace = {
     questions: [],
+    start_game: false
 }
 
 

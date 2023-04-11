@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { getAllQuestions } from "../../../api/services/game/game.service";
 import { PrivateRoutes, PublicRoutes } from "../../../router";
-import { setQuestions, cleanState } from "../../../redux/features/question/question.slice";
+import { setQuestions, cleanStateQuestions } from "../../../redux/features/game/game.slice";
 import { useDispatch } from "react-redux";
 
 function FormGameCategory() {
@@ -24,7 +24,7 @@ function FormGameCategory() {
     try {
 
       const { data } = await getAllQuestions(category!, term) as AxiosResponse<any, any>
-      dispatch(cleanState())
+      dispatch(cleanStateQuestions())
       dispatch(setQuestions(data.questions))
       navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.GAME}`)
 
