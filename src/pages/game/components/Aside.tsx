@@ -21,8 +21,8 @@ export default function Aside({ category, level, points }: Props) {
 
     const exitGame = () => {
         MySwal.fire({
-            title: <p>¿Deseas salir?</p>,
-            html: <strong>Se perderán todos los cambios</strong>,
+            title: <strong>¿Deseas salir?</strong>,
+            html: <i>Se perderán todos los cambios</i>,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#EAB308',

@@ -18,14 +18,15 @@ const gameSlice = createSlice({
             state.start_game = false
         },
         setPoints(state, action: PayloadAction<number>){
-            
+            state.collected_points += action.payload
         },
         cleanStateQuestions(state){
             state.questions = []
+            state.collected_points = 0
         }
     }
 })
 
-export const { getQuestions, setQuestions, finishGame, cleanStateQuestions } = gameSlice.actions
+export const { getQuestions, setQuestions, finishGame, setPoints, cleanStateQuestions } = gameSlice.actions
 
 export default gameSlice.reducer

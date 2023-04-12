@@ -19,13 +19,15 @@ export interface IQuestion {
 
 export interface IGameInstace {
     questions: IQuestion[],
-    start_game: boolean
+    start_game: boolean,
+    collected_points: number
 }
 
 
 export const InitialState: IGameInstace = {
     questions: [],
-    start_game: false
+    start_game: false,
+    collected_points: 0
 }
 
 
