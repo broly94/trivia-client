@@ -14,23 +14,28 @@ export default function Questions() {
 
     const dispatch = useDispatch()
 
-    const [answerSelected, setAnswerSelected] = useState<number | null>(null);
+    const { questions } = useSelector((state: AppState) => state.game)
 
     const { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid } = useGameContext()
 
-    const { questions } = useSelector((state: AppState) => state.game)
-
     const { id, question, category, level, points, answers } = questions[index]
 
+    //ELEMENTS HTML
+    const buttonNext = document.getElementById('buttonNext') as HTMLButtonElement
+
+    //Obtener los elementos con sus id correspondiente
+    const answerElement = document.getElementById(`answer-${answerChecked}`) as HTMLElement
+
+    //FUNCTIONS
     const onChecked = (index: number, isTrue: boolean) => {
+        //Setea la respuesta cuando hace click si es verdadera o falsa
         setIsValid(isTrue)
+        //Setea la respuesta checkeada
         setAnswerChecked(index)
-        setAnswerSelected(index);
     }
 
     const nextQuestion = () => {
 
-        const buttonNext = document.getElementById('buttonNext') as HTMLButtonElement
         buttonNext!.disabled = true
         buttonNext!.style.opacity = '0.5'
 
@@ -48,17 +53,15 @@ export default function Questions() {
         }
 
         //Verifica si la respuesta es correcta, si es asi, asigna los puntos de la pregunta
-        const answerElement = document.getElementById(`answer-${answerSelected}`) as HTMLElement;
-
         if (isValid) {
             dispatch(setPoints(Number(points)))
-            answerElement!!.style.backgroundColor = '#86efac';
+            answerElement.style.backgroundColor = '#86efac';
         } else {
-            answerElement!!.style.backgroundColor = '#fca5a5';
+            answerElement.style.backgroundColor = '#fca5a5';
             // Encuentra y pinta de verde la respuesta correcta
             const correctAnswerIndex = answers.findIndex((answer) => answer.is_true);
             const correctAnswerElement = document.getElementById(`answer-${correctAnswerIndex}`) as HTMLElement;
-            correctAnswerElement!!.style.backgroundColor = '#86efac';
+            correctAnswerElement.style.backgroundColor = '#86efac';
         }
 
         //Verifica si respondieron todas las preguntas
@@ -66,16 +69,14 @@ export default function Questions() {
             console.log("se terminó")
         }
 
-        // Saca el checked de la respuesta al dar al boton siguiente
+        //Saca el checked de la respuesta al dar al boton siguiente
         setAnswerChecked(null)
-
-        setAnswerSelected(null);
 
         setTimeout(() => {
             setIndex((prevIndex: number) => (prevIndex === questions.length - 1 ? 0 : prevIndex + 1));
             buttonNext!.disabled = false
             buttonNext!.style.opacity = '1'
-        }, 2000);
+        }, 2500);
     }
 
     return (
@@ -98,7 +99,7 @@ export default function Questions() {
                                 onClick={() => onChecked(index, a.is_true)}
                                 key={a.id}
                                 id={`answer-${index}`}
-                                className={`w-full p-5 border-2 rounded-md border-zinc-700 hover:bg-yellow-300 cursor-pointer text- font-medium ${answerSelected === index ? 'bg-yellow-300' : 'bg-zinc-50'}`}
+                                className={`w-full p-5 border-2 rounded-md border-zinc-700 hover:bg-yellow-300 cursor-pointer text- font-medium ${answerChecked === index ? 'bg-yellow-200' : 'bg-zinc-50'}`}
                             >
                                 {a.name}
                             </li>
