@@ -1,56 +1,82 @@
-import { useEffect, useState } from 'react'
-import { IAnser, ICategory } from "../models/interfaces"
-import Toast from '../../../components/toast/Toast'
-import { toast } from 'react-toastify'
+import { useGameContext } from '../context/GameContext'
+
+/** Sweetalert */
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content'
+import { useDispatch, useSelector } from 'react-redux'
+import { setPoints } from '../../../redux/features/game/game.slice'
+import { AppState } from '../../../redux/store/store'
+import { useState } from 'react';
+const MySwal = withReactContent(Swal)
 
 
-export interface Props {
-    id: string
-    question: string
-    category: ICategory
-    level: string
-    answers: Array<IAnser>
-    index: number
-    nextQuestion: (isValid: boolean, isChecked: number | null, setIsChecked: React.Dispatch<React.SetStateAction<number | null>>) => void
-    nextQuestionFinish: boolean | null
-}
+export default function Questions() {
 
-export default function Questions({ id, question, category, answers, level, nextQuestion, nextQuestionFinish }: Props) {
+    const dispatch = useDispatch()
 
-    const [isChecked, setIsCheked] = useState<number | null>(null)
+    const [answerSelected, setAnswerSelected] = useState<number | null>(null);
 
-    const [isValid, setIsValid] = useState<boolean>(false)
+    const { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid } = useGameContext()
+
+    const { questions } = useSelector((state: AppState) => state.game)
+
+    const { id, question, category, level, points, answers } = questions[index]
 
     const onChecked = (index: number, isTrue: boolean) => {
         setIsValid(isTrue)
-        setIsCheked(index)
+        setAnswerChecked(index)
+        setAnswerSelected(index);
     }
 
-    useEffect(() => {
-        if (nextQuestionFinish === true) {
-            toast.success('Respuesta correcta', {
-                position: "top-left",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            });
-        } else if (nextQuestionFinish === false) {
-            toast.error('Respuesta incorrecta', {
-                position: "top-left",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            });
+    const nextQuestion = () => {
+
+        const buttonNext = document.getElementById('buttonNext') as HTMLButtonElement
+        buttonNext!.disabled = true
+        buttonNext!.style.opacity = '0.5'
+
+        //Verifica que se envie una respuesta, si no hace un return vacio para que pueda seguir
+        if (answerChecked === null) {
+            MySwal.fire({
+                title: <strong>¡Atención!</strong>,
+                html: <i>Debe seleccionar una opción para poder seguir</i>,
+                icon: 'error',
+                confirmButtonColor: '#eab308',
+            })
+            buttonNext!.disabled = false
+            buttonNext!.style.opacity = '1'
+            return
         }
-    }, [nextQuestionFinish])
+
+        //Verifica si la respuesta es correcta, si es asi, asigna los puntos de la pregunta
+        const answerElement = document.getElementById(`answer-${answerSelected}`) as HTMLElement;
+
+        if (isValid) {
+            dispatch(setPoints(Number(points)))
+            answerElement!!.style.backgroundColor = '#86efac';
+        } else {
+            answerElement!!.style.backgroundColor = '#fca5a5';
+            // Encuentra y pinta de verde la respuesta correcta
+            const correctAnswerIndex = answers.findIndex((answer) => answer.is_true);
+            const correctAnswerElement = document.getElementById(`answer-${correctAnswerIndex}`) as HTMLElement;
+            correctAnswerElement!!.style.backgroundColor = '#86efac';
+        }
+
+        //Verifica si respondieron todas las preguntas
+        if (questions.length == index + 1) {
+            console.log("se terminó")
+        }
+
+        // Saca el checked de la respuesta al dar al boton siguiente
+        setAnswerChecked(null)
+
+        setAnswerSelected(null);
+
+        setTimeout(() => {
+            setIndex((prevIndex: number) => (prevIndex === questions.length - 1 ? 0 : prevIndex + 1));
+            buttonNext!.disabled = false
+            buttonNext!.style.opacity = '1'
+        }, 2000);
+    }
 
     return (
         <>
@@ -71,8 +97,8 @@ export default function Questions({ id, question, category, answers, level, next
                             <li
                                 onClick={() => onChecked(index, a.is_true)}
                                 key={a.id}
-                                id="answers"
-                                className={`w-full p-5 border-2 rounded-md border-zinc-700 hover:bg-yellow-300 cursor-pointer text- font-medium ${isChecked === index ? 'bg-yellow-300' : 'bg-zinc-50'}`}
+                                id={`answer-${index}`}
+                                className={`w-full p-5 border-2 rounded-md border-zinc-700 hover:bg-yellow-300 cursor-pointer text- font-medium ${answerSelected === index ? 'bg-yellow-300' : 'bg-zinc-50'}`}
                             >
                                 {a.name}
                             </li>
@@ -81,7 +107,7 @@ export default function Questions({ id, question, category, answers, level, next
                     }
                 </ul>
 
-                <button onClick={() => nextQuestion(isValid, isChecked, setIsCheked)} className=' mt-5 border-2 border-zinc-600 p-2 text-lg font-semibold font-sans bg-green-300 hover:text-black transition-colors'>Siguiente</button>
+                <button onClick={nextQuestion} id="buttonNext" className=' mt-5 border-2 border-zinc-600 p-2 text-lg font-semibold font-sans bg-green-300 hover:text-black transition-colors'>Siguiente</button>
 
             </section>
         </>

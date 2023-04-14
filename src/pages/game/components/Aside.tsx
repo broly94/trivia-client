@@ -1,23 +1,24 @@
 import { useNavigate } from 'react-router-dom';
 import { PrivateRoutes } from '../../../router';
 import { finishGame, cleanStateQuestions } from '../../../redux/features/game/game.slice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
+import { useGameContext } from '../context/GameContext';
+import { AppState } from '../../../redux/store/store';
 const MySwal = withReactContent(Swal)
 
-
-export interface Props {
-    category: string,
-    level: string,
-    points: string
-}
-
-export default function Aside({ category, level, points }: Props) {
+export default function Aside() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid } = useGameContext()
+
+    const { questions } = useSelector((state: AppState) => state.game)
+
+    const { category, level, points } = questions[0]
 
     const exitGame = () => {
         MySwal.fire({
@@ -41,7 +42,7 @@ export default function Aside({ category, level, points }: Props) {
         <div className="content mx-0 my-auto flex flex-col justify-center h-full content-center gap-5">
             <h5 className='text-center text-lg uppercase font-normal'>
                 <span className='font-extrabold text-zinc-600'>Categoria</span><br />
-                {category}
+                {category.name}
             </h5>
             <h5 className='text-center text-lg uppercase font-norma'>
                 <span className='font-extrabold text-zinc-600'>Nivel</span><br />
