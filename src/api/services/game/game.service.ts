@@ -11,3 +11,16 @@ export const getAllQuestions = async (category: string, level: string) => {
     })
 
 }
+
+export const setPointsUser = async (points: number) => {
+    const { token } = getToken()
+    const user = localStorage.getItem('user')
+    const userId = JSON.parse(user!).id
+    const data = await axios.put('/api/set-points', {id: userId, points}, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    console.log(data)
+    return data
+}

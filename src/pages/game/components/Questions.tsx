@@ -6,7 +6,8 @@ import withReactContent from 'sweetalert2-react-content'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPoints } from '../../../redux/features/game/game.slice'
 import { AppState } from '../../../redux/store/store'
-import { useState } from 'react';
+import { setPointsUser } from '../../../api/services/game/game.service';
+import { useEffect } from 'react';
 const MySwal = withReactContent(Swal)
 
 
@@ -14,7 +15,7 @@ export default function Questions() {
 
     const dispatch = useDispatch()
 
-    const { questions } = useSelector((state: AppState) => state.game)
+    const { questions, collected_points } = useSelector((state: AppState) => state.game)
 
     const { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid } = useGameContext()
 
@@ -34,12 +35,23 @@ export default function Questions() {
         setAnswerChecked(index)
     }
 
+
+    const finishGame = async () => {
+        if (questions.length == index + 1) {
+            await setPointsUser(collected_points)
+        }
+    }
+    useEffect(() => {
+        finishGame()
+    }, [collected_points])
+
     const nextQuestion = () => {
 
+        //Cuando se haga click en el boton "Siguiente" el boton aparecera deshabilitado y con baja opacidad
         buttonNext!.disabled = true
         buttonNext!.style.opacity = '0.5'
 
-        //Verifica que se envie una respuesta, si no hace un return vacio para que pueda seguir
+        //Verifica que se envie una respuesta, si no hace click enviar una alerta de error
         if (answerChecked === null) {
             MySwal.fire({
                 title: <strong>¡Atención!</strong>,
@@ -47,12 +59,13 @@ export default function Questions() {
                 icon: 'error',
                 confirmButtonColor: '#eab308',
             })
+            //Al enviar la alerta le decimos que el boton "Siguiente" no este deshabilitado y que la opacidad este full
             buttonNext!.disabled = false
             buttonNext!.style.opacity = '1'
             return
         }
 
-        //Verifica si la respuesta es correcta, si es asi, asigna los puntos de la pregunta
+        //Verifica si la respuesta es correcta, si es asi, asigna los puntos de la pregunta y pinta de colores las respuesta
         if (isValid) {
             dispatch(setPoints(Number(points)))
             answerElement.style.backgroundColor = '#86efac';
@@ -64,13 +77,11 @@ export default function Questions() {
             correctAnswerElement.style.backgroundColor = '#86efac';
         }
 
-        //Verifica si respondieron todas las preguntas
-        if (questions.length == index + 1) {
-            console.log("se terminó")
-        }
-
         //Saca el checked de la respuesta al dar al boton siguiente
         setAnswerChecked(null)
+
+        //Verifica si respondieron todas las preguntas y lo redirecciona a la pagina
+
 
         setTimeout(() => {
             setIndex((prevIndex: number) => (prevIndex === questions.length - 1 ? 0 : prevIndex + 1));
