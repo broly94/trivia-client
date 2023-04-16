@@ -10,5 +10,6 @@ export const PrivateRoutes = {
     GAME: 'game',
     HOME: 'home',
     RANK: 'rank',
-    CATEGORY: 'category'
+    CATEGORY: 'category',
+    STATUS: 'status'
 }

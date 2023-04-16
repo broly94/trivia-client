@@ -7,7 +7,7 @@ const gameSlice = createSlice({
     name: 'game',
     initialState: InitialState,
     reducers: {
-        getQuestions(state, action: PayloadAction<IQuestion>) {
+        getQuestions(state) {
             return state
         },
         setQuestions(state, action: PayloadAction<IQuestion[]>){

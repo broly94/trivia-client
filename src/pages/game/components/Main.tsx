@@ -1,33 +1,10 @@
-import { useState } from 'react'
-
-/** Redux */
-import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../../redux/store/store";
-import { setPoints } from '../../../redux/features/game/game.slice';
-
 /** Components */
 import Aside from './Aside';
 import Questions from './Questions';
 
-
-
 import GameProvider from '../context/GameContext';
-import { ToastContainer } from 'react-toastify';
 
 export default function Main() {
-
-    // const { questions } = useSelector((state: AppState) => state.game)
-
-    // const [index, setIndex] = useState(0)
-
-    // const [nextQuestionFinish, setNextQuestionFinish] = useState<boolean | null>(null)
-
-    // const { id, question, category, level, points, answers } = questions[index]
-
-    // const dispatch = useDispatch()
-
-
-
 
     return (
         <GameProvider>
@@ -46,19 +23,6 @@ export default function Main() {
                 <aside className='hidden lg:block lg:col-span-1 bg-yellow-300 h-screen border-l-2 border-zinc-400'>
                     <Aside />
                 </aside>
-
-                {/* <ToastContainer
-                    position="top-center"
-                    autoClose={2000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="dark"
-                /> */}
 
             </main>
         </GameProvider>

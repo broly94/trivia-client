@@ -10,6 +10,7 @@ const NotFound = lazy(() => import("../pages/not-found/404"))
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'))
 const Game = lazy(() => import('../pages/game/Game'))
 const GameCategory = lazy(() => import('../pages/game/GameCategory'))
+const GameStatus = lazy(() => import('../pages/game/components/GameStatus'))
 const Home = lazy(() => import('../pages/home/Home'))
 
 function Private() {
@@ -22,9 +23,12 @@ function Private() {
           <Route path={`/${PrivateRoutes.DASHBOARD}`} element={<Dashboard />} />
           <Route path={`/${PrivateRoutes.GAME}/${PrivateRoutes.CATEGORY}/:category`} element={<GameCategory />} />
 
+          {/** Si el usuario no le da a iniciar juego, lo redirecciona al Home */}
           <Route element={<GameRouter />}>
             <Route path={`/${PrivateRoutes.GAME}`} element={<Game />} />
+            <Route path={`/${PrivateRoutes.GAME}/${PrivateRoutes.STATUS}`} element={<GameStatus />} />
           </Route>
+
 
           <Route path="*" element={<NotFound />} />
         </Routes>
