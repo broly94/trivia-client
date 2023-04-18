@@ -1,15 +1,17 @@
+import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useGameContext } from '../context/GameContext'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { AppState } from '../../../redux/store/store'
-import { setPoints } from '../../../redux/features/game/game.slice';
+import { setPoints, setCorrectAnswer } from '../../../redux/features/game/game.slice';
 import GameCompleted from '../utils/game-completed';
 
 /** Sweetalert */
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
+import { useCallback, useState } from 'react';
 const MySwal = withReactContent(Swal)
 
 export default function Questions() {
@@ -17,14 +19,13 @@ export default function Questions() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const { questions, collected_points } = useSelector((state: AppState) => state.game)
+    const [isNextAvailable, setIsNextAvailable] = useState<boolean>(true)
+
+    const { questions, collected_points, correct_answer } = useSelector((state: AppState) => state.game)
 
     const { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid } = useGameContext()
 
     const { id, question, category, level, points, answers } = questions[index]
-
-    //ELEMENTS HTML
-    const buttonNext = document.getElementById('buttonNext') as HTMLButtonElement
 
     //Obtener los elementos con sus id correspondiente
     const answerElement = document.getElementById(`answer-${answerChecked}`) as HTMLElement
@@ -39,9 +40,7 @@ export default function Questions() {
 
     const nextQuestion = async () => {
 
-        //Cuando se haga click en el boton "Siguiente" el boton aparecera deshabilitado y con baja opacidad
-        buttonNext!.disabled = true
-        buttonNext!.style.opacity = '0.5'
+        setIsNextAvailable(false)
 
         let lastPoints: number = 0
 
@@ -54,47 +53,49 @@ export default function Questions() {
                 confirmButtonColor: '#eab308',
             })
             //Al enviar la alerta le decimos que el boton "Siguiente" no este deshabilitado y que la opacidad este full
-            buttonNext!.disabled = false
-            buttonNext!.style.opacity = '1'
+            setIsNextAvailable(true)
             return
         }
 
         //Verifica si la respuesta es correcta, si es asi, asigna los puntos de la pregunta y pinta de colores las respuesta
         if (isValid) {
             dispatch(setPoints(Number(points)))
+            dispatch(setCorrectAnswer(1))
             lastPoints = Number(points)
             answerElement.style.backgroundColor = '#86efac';
         } else {
             lastPoints = 0
             answerElement.style.backgroundColor = '#fca5a5';
             // Encuentra y pinta de verde la respuesta correcta
-            const correctAnswerIndex = answers.findIndex((answer) => answer.is_true);
+            const correctAnswerIndex = answers.findIndex((answer) => answer.is_true)
             const correctAnswerElement = document.getElementById(`answer-${correctAnswerIndex}`) as HTMLElement;
-            correctAnswerElement.style.backgroundColor = '#86efac';
+            correctAnswerElement.style.backgroundColor = '#86efac'
         }
 
-        
+
         //Saca el checked de la respuesta al dar al boton siguiente
         setAnswerChecked(null)
 
         //Funcion donde se limpia el estado de las respuestas y si guarda en la base de datos los puntos del usuario
-        GameCompleted({questions, index, collected_points, lastPoints, dispatch, navigate})
+        GameCompleted({ questions, index, collected_points, lastPoints, dispatch, navigate })
 
         setTimeout(() => {
             setIndex((prevIndex: number) => (prevIndex === questions.length - 1 ? 0 : prevIndex + 1));
-            buttonNext!.disabled = false
-            buttonNext!.style.opacity = '1'
+            setIsNextAvailable(true)
         }, 2500)
+
     }
 
     return (
         <>
-            <section className='info block lg:hidden mt-10'>
-                <h2 className='capitalize'><strong>Categoria: </strong>{category.name}</h2>
+            <section className='info flex flex-wrap flex-col lg:hidden mt-5 gap-2'>
+                <h2 className='capitalize font-mono text-lg text-gray-900'><strong>Categoria: </strong>{category.name}</h2>
                 <p className='capitalize'><strong>Nivel: </strong>{level}</p>
+                <p className='capitalize'><strong>Puntos por preguntas: </strong>{points}</p>
+                <p className='capitalize'><strong>Respuestas acertadas: </strong>{correct_answer}/{questions.length}</p>
             </section>
 
-            <section className='question p-5 w-full border-2 rounded-md border-zinc-700 font-semibold text-lg mt-10'>
+            <section className='question p-3 w-full border-2 rounded-md border-zinc-700 font-semibold text-lg mt-5'>
                 <div key={id}>{question}</div>
             </section>
 
@@ -116,7 +117,13 @@ export default function Questions() {
                     }
                 </ul>
 
-                <button onClick={nextQuestion} id="buttonNext" className=' mt-5 border-2 border-zinc-600 p-2 text-lg font-semibold font-sans bg-green-300 hover:text-black transition-colors'>Siguiente</button>
+                <button
+                    onClick={nextQuestion}
+                    disabled={!isNextAvailable}
+                    id="buttonNext"
+                    className={`mt-5 border-2 border-zinc-600 p-2 text-lg font-semibold font-sans bg-green-300 hover:text-black transition-colors ${!isNextAvailable ? 'opacity-50' : ''}`}>
+                    Siguiente
+                </button>
 
             </section>
         </>

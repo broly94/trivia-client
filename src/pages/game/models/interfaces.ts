@@ -21,7 +21,7 @@ export interface IGameInstace {
     questions: IQuestion[]
     start_game: boolean
     collected_points: number
-    finish_game: boolean | null
+    correct_answer: number
 }
 
 
@@ -29,7 +29,7 @@ export const InitialState: IGameInstace = {
     questions: [],
     start_game: false,
     collected_points: 0,
-    finish_game: null
+    correct_answer: 0
 }
 
 

@@ -2,14 +2,15 @@ import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { AxiosError, AxiosResponse } from "axios"
 
-import { getCategories } from "../../../api/services/home/home.service"
+import { getCategories, getRank } from "../../../api/services/home/home.service"
 import { cleanStateCategory, setCategory } from "../../../redux/features/category/category.slice"
 import { PublicRoutes } from "../../../router"
 import { useNavigate } from "react-router-dom"
+import { useHomeContext } from "../context/HomeContext"
 
 export default function DataIndex() {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const getAllCategories = async () => {
@@ -30,14 +31,10 @@ export default function DataIndex() {
         }
     }
 
-    const getAllRank = async () => {
-
-    }
-
     useEffect(() => {
 
         getAllCategories()
-
+        
         return () => {
             dispatch(cleanStateCategory())
         }

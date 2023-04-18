@@ -7,7 +7,7 @@ export default function GameStatus() {
 
     const dispatch = useDispatch()
 
-    const { questions, collected_points } = useSelector((state: AppState) => state.game)
+    const { questions, collected_points, correct_answer } = useSelector((state: AppState) => state.game)
 
     const { level, category } = questions[0]
 
@@ -25,6 +25,7 @@ export default function GameStatus() {
                 <h3 className="font-medium text-lg">Categoría: <strong className="capitalize">{category.name}</strong></h3>
                 <h3 className="font-medium text-lg">Nivel: <strong className="capitalize">{level}</strong></h3>
                 <h3 className="font-medium text-lg">Puntos ganados: <strong className="capitalize">{collected_points}</strong></h3>
+                <h3 className="font-medium text-lg">Respuestas acertadas: <strong className="capitalize">{correct_answer}/{questions.length}</strong></h3>
             </div>
             <button onClick={handleFinish} className=' mt-5 border-2 border-zinc-600 p-2 text-lg font-semibold font-sans bg-yellow-300 hover:text-black transition-colors'>Jugar de nuevo</button>
         </div>

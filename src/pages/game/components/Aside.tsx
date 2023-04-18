@@ -14,9 +14,9 @@ export default function Aside() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid } = useGameContext()
+    // const { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid } = useGameContext()
 
-    const { questions } = useSelector((state: AppState) => state.game)
+    const { questions, correct_answer } = useSelector((state: AppState) => state.game)
 
     const { category, level, points } = questions[0]
 
@@ -51,6 +51,10 @@ export default function Aside() {
             <h5 className='text-center text-lg uppercase font-norma'>
                 <span className='font-extrabold text-zinc-600'>Puntos por preguntas</span><br />
                 {points}
+            </h5>
+            <h5 className='text-center text-lg uppercase font-norma'>
+                <span className='font-extrabold text-zinc-600'>Respuestas acertadas</span><br />
+                {correct_answer}/{questions.length}
             </h5>
             <button onClick={exitGame} className=' my-5  mx-3 border-2 border-zinc-600 p-2 text-lg font-semibold font-sans bg-red-300 hover:text-black transition-colors'>Salir</button>
         </div>

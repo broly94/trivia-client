@@ -9,3 +9,7 @@ export const getCategories = async () => {
         }
     })
 }
+
+export const getRank = async () => {
+    return await axios.get('/api/users-rank')
+}
