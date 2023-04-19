@@ -33,9 +33,9 @@ export default function HomeCategories() {
     }, [])
 
     return (
-        <div className="home-categories flex flex-col mx-auto my-0 w-full max-w-2xl border-2 border-zinc-600 rounded-md ">
+        <div className="home-categories flex flex-col mx-auto my-0 w-full max-w-3xl border-2 border-zinc-600 hover:shadow-2xl transition-all shadow-slate-900">
 
-            <h3 className="text-center p-5 text-xl font-semibold uppercase border-b-2 border-zinc-600 rounded-sm bg-yellow-200">Categorias</h3>
+            <h3 className="text-center p-5 text-xl font-semibold uppercase border-zinc-600 bg-gray-800 text-white mb-3">Categorias</h3>
 
             <div className="flex flex-wrap flex-col w-full gap-2 p-2">
                 {
@@ -43,7 +43,7 @@ export default function HomeCategories() {
                         <Link
                             key={cat.id}
                             to={`/private/game/category/${cat.name}`}
-                            className="p-5 transition-colors hover:bg-yellow-300 hover:shadow-md uppercase font-bold text-base text-gray-900 border-2 border-zinc-600 rounded-md">{cat.name}
+                            className="p-5 transition-colors hover:bg-green-300 hover:shadow-xl uppercase font-bold text-base text-gray-900 border-2 border-zinc-600">{cat.name}
                         </Link>
                     ))
                 }

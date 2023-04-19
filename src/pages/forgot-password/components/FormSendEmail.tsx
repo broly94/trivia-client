@@ -37,7 +37,7 @@ function Form() {
                         <input type="email" name="email" placeholder="ejemplo@gmail.com" className="p-4 text-zinc-700 font-sans text-lg focus:outline-none bg-zinc-300" autoFocus onChange={handleChange} value={values.email} />
                         {touched.email && errors.email && <ErrorMessages message={errors.email} />}
 
-                        <button className="border-2 border-zinc-600 p-2 text-lg font-semibold font-sans hover:bg-yellow-300 hover:text-black transition-colors" type="submit" disabled={isSubmitting}>Enviar</button>
+                        <button className="border-2 border-gray-800 p-2 text-lg font-semibold font-sans hover:bg-gray-800 hover:text-white transition-colors" type="submit" disabled={isSubmitting}>Enviar</button>
                     </form>
                 )
             }

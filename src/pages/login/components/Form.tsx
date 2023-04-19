@@ -58,7 +58,7 @@ function Form() {
                         <input type="password" name="password" placeholder="********" className="p-4 text-zinc-700 font-sans text-lg focus:outline-none bg-zinc-300" onChange={handleChange} value={values.password} />
                         {touched.password && errors.password && <ErrorMessages message={errors.password} />}
 
-                        <button className="border-2 border-zinc-600 p-2 text-lg font-semibold font-sans hover:bg-yellow-300 hover:text-black transition-colors" type="submit" disabled={isSubmitting}>Entrar</button>
+                        <button className="border-2 border-gray-800 p-2 text-lg font-semibold font-sans hover:bg-gray-800 hover:text-white transition-colors" type="submit" disabled={isSubmitting}>Ingresar</button>
 
                     </form>
                 )

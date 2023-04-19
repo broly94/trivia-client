@@ -33,58 +33,47 @@ export default function HomeRankig() {
     }, [])
 
     return (
-        <div className="home-ranking flex flex-col mx-auto my-0 w-full max-w-2xl border-2 border-zinc-600 rounded-md ">
-            <h3 className="text-center p-5 text-xl font-semibold uppercase border-b-2 border-zinc-600 rounded-sm bg-yellow-200">Ranking</h3>
+        <div className="home-ranking flex flex-col mx-auto my-0 w-full max-w-3xl border-2 border-zinc-600 hover:shadow-2xl transition-all shadow-slate-900">
+            <h3 className="text-center p-5 text-xl font-semibold uppercase border-zinc-600 bg-gray-800 text-white mb-3">Ranking</h3>
 
             <div className="flex flex-wrap flex-col w-full p-2 h-72 overflow-y-scroll">
-                <table className="w-full text-sm text-left">
-                    <thead className="text-base text-gray-700 uppercase bg-gray-50 border-b-2 border-zinc-400">
-                        <tr className="text-center">
-                            <th scope="col" className="px-6 py-3">
+                <table className="w-full text-sm text-left border-2 border-gray-800">
+
+                    <thead className="text-base text-gray-200 uppercase bg-gray-500 border-b-2 border-zinc-400">
+                        <tr className="text-center mb-3">
+                            <th scope="col" className="font-extrabold px-6 py-3">
                                 Posicion
                             </th>
-                            <th scope="col" className="px-6 py-3">
+                            <th scope="col" className="font-extrabold px-6 py-3">
                                 Usuario
                             </th>
-                            <th scope="col" className="px-6 py-3">
+                            <th scope="col" className="font-extrabold px-6 py-3">
                                 Puntos
                             </th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {
                             rank.map((r, index) => (
-                                <tr className={`border-b hover:cursor-pointer ${r.id == idUser ? 'bg-yellow-200' : 'bg-slate-100'}`} key={r.id}>
+                                <tr className={`hover:cursor-pointer border-2 border-gray-800 ${r.id == idUser ? 'bg-red-200' : 'bg-slate-100'}`} key={r.id}>
                                     <th scope="row" className="px-6 py-4 text-gray-900 font-bold text-center">
-                                        #{index + 1}
+                                        <span className="text-gray-700">#{index + 1}</span>
                                     </th>
                                     <td className="px-6 py-4 text-center font-bold text-base text-gray-900">
-                                        {r.name}
+                                        <span className="text-gray-700">{r.name}</span>
                                     </td>
                                     <td className="px-6 py-4 text-center font-bold text-base text-gray-900">
-                                        {r.points}
+                                        <span className="text-gray-800">{r.points}</span>
                                     </td>
                                 </tr>
                             ))
                         }
 
                     </tbody>
+
                 </table>
             </div>
-
-            {/* <div className="flex flex-wrap flex-col w-full p-2 h-72 overflow-y-scroll">
-                <ul>
-                    {
-                        rank.map((r, index) => (
-                            <li key={r.id} className="flex flex-row justify-between text-center">
-                                <span>#{index + 1}</span>
-                                <h3 className="text-center">{r.name}</h3>
-                                <span>{r.points}</span>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </div> */}
         </div>
     )
 }

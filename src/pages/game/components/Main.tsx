@@ -20,7 +20,7 @@ export default function Main() {
 
                 </article>
 
-                <aside className='hidden lg:block lg:col-span-1 bg-yellow-300 h-screen border-l-2 border-zinc-400'>
+                <aside className='hidden lg:block lg:col-span-1 bg-gray-800 h-screen border-l-2 text-zinc-400 border-zinc-400'>
                     <Aside />
                 </aside>
 

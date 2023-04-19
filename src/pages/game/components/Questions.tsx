@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useGameContext } from '../context/GameContext'
@@ -11,7 +10,7 @@ import GameCompleted from '../utils/game-completed';
 /** Sweetalert */
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 const MySwal = withReactContent(Swal)
 
 export default function Questions() {
@@ -88,27 +87,27 @@ export default function Questions() {
 
     return (
         <>
-            <section className='info flex flex-wrap flex-col lg:hidden mt-5 gap-2'>
-                <h2 className='capitalize font-mono text-lg text-gray-900'><strong>Categoria: </strong>{category.name}</h2>
-                <p className='capitalize'><strong>Nivel: </strong>{level}</p>
-                <p className='capitalize'><strong>Puntos por preguntas: </strong>{points}</p>
-                <p className='capitalize'><strong>Respuestas acertadas: </strong>{correct_answer}/{questions.length}</p>
+            <section className='info flex flex-wrap flex-col lg:hidden mt-5 gap-2 bg-gray-600 py-3'>
+                <h2 className='capitalize font-sans text-md text-zinc-100'><strong>Categoria: </strong>{category.name}</h2>
+                <p className='capitalize font-sans text-md text-zinc-100'><strong>Nivel: </strong>{level}</p>
+                <p className='capitalize font-sans text-md text-zinc-100'><strong>Puntos por preguntas: </strong>{points}</p>
+                <p className='capitalize font-sans text-md text-zinc-100'><strong>Respuestas acertadas: </strong><span className='text-green-400'>{correct_answer} </span>/ {questions.length}</p>
             </section>
 
-            <section className='question p-3 w-full border-2 rounded-md border-zinc-700 font-semibold text-lg mt-5'>
-                <div key={id}>{question}</div>
+            <section className='question p-5 w-full font-semibold mt-5 bg-gray-800'>
+                <h2 key={id} className='font-sans text-center text-lg lg:text-xl text-white'>{question}</h2>
             </section>
 
-            <section className='answers flex flex-col gap-3 py-3 w-3/4 mx-auto my-0'>
+            <section className='answers flex flex-col gap-3 py-3 w-full'>
 
-                <ul className='flex flex-col gap-3'>
+                <ul className='flex flex-col gap-3 mx-0 my-auto justify-center'>
                     {
                         answers.map((a, index) => (
                             <li
                                 onClick={() => onChecked(index, a.is_true)}
                                 key={a.id}
                                 id={`answer-${index}`}
-                                className={`w-full p-5 border-2 rounded-md border-zinc-700 hover:bg-yellow-300 cursor-pointer text- font-medium ${answerChecked === index ? 'bg-yellow-200' : 'bg-zinc-50'}`}
+                                className={`w-full p-5 border-2 border-zinc-700 hover:bg-yellow-200 cursor-pointer text- font-medium ${answerChecked === index ? 'bg-green-200' : 'bg-zinc-50'}`}
                             >
                                 {a.name}
                             </li>

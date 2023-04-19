@@ -41,22 +41,22 @@ export default function Aside() {
     return (
         <div className="content mx-0 my-auto flex flex-col justify-center h-full content-center gap-5">
             <h5 className='text-center text-lg uppercase font-normal'>
-                <span className='font-extrabold text-zinc-600'>Categoria</span><br />
+                <span className='font-extrabold text-zinc-200'>Categoria</span><br />
                 {category.name}
             </h5>
             <h5 className='text-center text-lg uppercase font-norma'>
-                <span className='font-extrabold text-zinc-600'>Nivel</span><br />
+                <span className='font-extrabold text-zinc-200'>Nivel</span><br />
                 {level}
             </h5>
             <h5 className='text-center text-lg uppercase font-norma'>
-                <span className='font-extrabold text-zinc-600'>Puntos por preguntas</span><br />
+                <span className='font-extrabold text-zinc-200'>Puntos por preguntas</span><br />
                 {points}
             </h5>
             <h5 className='text-center text-lg uppercase font-norma'>
-                <span className='font-extrabold text-zinc-600'>Respuestas acertadas</span><br />
-                {correct_answer}/{questions.length}
+                <span className='font-extrabold text-zinc-200'>Respuestas acertadas</span><br />
+                <span className='text-green-600 font-semibold'>{correct_answer} </span>/ {questions.length}
             </h5>
-            <button onClick={exitGame} className=' my-5  mx-3 border-2 border-zinc-600 p-2 text-lg font-semibold font-sans bg-red-300 hover:text-black transition-colors'>Salir</button>
+            <button onClick={exitGame} className=' my-5 mx-3 p-2 text-lg font-semibold font-sans bg-red-400 text-gray-800 transition-colors'>Salir</button>
         </div>
     )
 }

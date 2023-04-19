@@ -6,7 +6,7 @@ import FormGameCategory from "./components/FormGameCategory";
 export default function GameCategory() {
 
     return (
-        <div className="flex flex-col mx-0 my-auto gap-5">
+        <div className="flex flex-col mx-5 my-auto gap-5">
 
             <h3 className="font-mono font-semibold text-4xl text-center text-zinc-700">Trivia <span className="text-yellow-300">Game</span></h3>
 
@@ -22,9 +22,9 @@ export default function GameCategory() {
             </div>
 
 
-            <div className="flex flex-col gap-8 justify-center w-full mx-0 my-auto p-5 border-2 rounded-md border-zinc-700">
+            <div className="flex flex-col gap-8 justify-center w-full mx-0 my-auto p-8 border-2 border-gray-700 hover:shadow-xl transition-all">
 
-                <h4 className="font-sans font-medium text-lg">Selecciona en el nivel que quieres jugar</h4>
+                <h4 className="font-sans font-medium text-lg lg:text-xl text-gray-900 text-center">Selecciona en el nivel que quieres jugar</h4>
 
                 <FormGameCategory />
 
