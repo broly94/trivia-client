@@ -8,6 +8,8 @@ interface IContextProps {
     setAnswerChecked: (answerChecked: number | null) => void
     isValid: boolean
     setIsValid: ( isValid: boolean ) => void
+    isNextAvailable: boolean
+    setIsNextAvailable: ( isNextAvailable: boolean ) => void
 }
 
 const GameContext = createContext<IContextProps>({} as IContextProps)
@@ -33,7 +35,9 @@ export default function GameProvider({children}: IProviderProps) {
 
     const [isValid, setIsValid] = useState<boolean>(false)
 
-    const contextValue = { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid }
+    const [isNextAvailable, setIsNextAvailable] = useState<boolean>(true)
+
+    const contextValue = { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid, isNextAvailable, setIsNextAvailable }
 
     return(
         <GameContext.Provider value={contextValue}>

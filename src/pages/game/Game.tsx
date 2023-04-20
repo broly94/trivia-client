@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { finishGame, cleanStateQuestions } from "../../redux/features/game/game.slice"
 import { useNavigate } from "react-router-dom";
 import { PrivateRoutes } from "../../router";
-import Main from "./components/Main";
+import Main from "./layouts/Main";
 
 
 export default function Game() {

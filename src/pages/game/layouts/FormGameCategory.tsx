@@ -1,10 +1,13 @@
-import { AxiosError, AxiosResponse } from "axios";
 import { useState } from "react";
+import { AxiosError, AxiosResponse } from "axios";
+
+import { useDispatch } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { getAllQuestions } from "../../../api/services/game/game.service";
-import { PrivateRoutes, PublicRoutes } from "../../../router";
 import { setQuestions, cleanStateQuestions } from "../../../redux/features/game/game.slice";
-import { useDispatch } from "react-redux";
+
+import { PrivateRoutes, PublicRoutes } from "../../../router";
+
 
 function FormGameCategory() {
 

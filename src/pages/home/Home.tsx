@@ -18,7 +18,7 @@ function Home() {
 
           <h3 className="text-center py-10 font-bold capitalize text-5xl text-gray-800 font-sans underline">Diviértete, Aprende Y Comparte</h3>
 
-          <section className="home-center flex flex-col lg:flex-row gap-2 px-5">
+          <section className="home-center flex flex-col lg:flex-row gap-5 px-5">
 
             <HomeCategories />
 

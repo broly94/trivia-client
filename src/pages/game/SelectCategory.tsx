@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 import { PublicRoutes } from "../../router";
 
-import FormGameCategory from "./components/FormGameCategory";
+import FormGameCategory from "./layouts/FormGameCategory";
 
-export default function GameCategory() {
+export default function SelectCategory() {
 
     return (
         <div className="flex flex-col mx-5 my-auto gap-5">

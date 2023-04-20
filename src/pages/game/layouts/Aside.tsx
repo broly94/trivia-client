@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
-import { useGameContext } from '../context/GameContext';
 import { AppState } from '../../../redux/store/store';
 const MySwal = withReactContent(Swal)
 
@@ -13,8 +12,6 @@ export default function Aside() {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    // const { index, setIndex, answerChecked, setAnswerChecked, isValid, setIsValid } = useGameContext()
 
     const { questions, correct_answer } = useSelector((state: AppState) => state.game)
 
