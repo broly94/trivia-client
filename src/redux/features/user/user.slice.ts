@@ -8,11 +8,10 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: UserEmptyState,
     reducers: {
-        getUser(state, action: PayloadAction<UserState>){
+        getUser(state){
             return state
         },
         setUser(state, action: PayloadAction<UserState>){
-            localStorage.setItem('user', JSON.stringify(action.payload))
             return state = {...action.payload}
         }
     }
