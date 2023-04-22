@@ -22,7 +22,7 @@ export default function Public() {
         <Suspense fallback={<Loader />}>
             <LayoutPublic>
                 <Routes>
-                    <Route path="/" element={<Navigate to={PrivateRoutes.PRIVATE} />} />
+                    <Route path="/" element={<Navigate to={`${PrivateRoutes.PRIVATE}`} />} />
                     <Route path={`${PublicRoutes.REGISTER}`} element={<Register />} />
                     <Route path={`/${PublicRoutes.SEND_EMAIL}`} element={<SendEmail />} />
                     <Route path={`/${PublicRoutes.NEW_PASSWORD}/:token`} element={<FormNewPassword />} />
