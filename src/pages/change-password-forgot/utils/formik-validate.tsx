@@ -1,8 +1,8 @@
-import { IinitialValue } from "../models/interfaces"
+import { INewPassword } from "../models/interfaces"
 
-function FormikValidate(values:IinitialValue) {
+export default function FormikValidate(values:INewPassword) {
 
-    const errors = {  } as IinitialValue
+    const errors = {  } as INewPassword
 
     if (!values.password) {
         errors.password = 'El password es requerido'
@@ -13,5 +13,3 @@ function FormikValidate(values:IinitialValue) {
     return errors
 
 }
-
-export default FormikValidate

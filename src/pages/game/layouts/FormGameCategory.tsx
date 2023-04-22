@@ -2,11 +2,13 @@ import { useState } from "react";
 import { AxiosError, AxiosResponse } from "axios";
 
 import { useDispatch } from "react-redux";
-import { useParams, Link, useNavigate } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { getAllQuestions } from "../../../api/services/game/game.service";
-import { setQuestions, cleanStateQuestions } from "../../../redux/features/game/game.slice";
+import { setQuestions, cleanStateQuestions, initGame } from "../../../redux/features/game/game.slice";
 
 import { PrivateRoutes, PublicRoutes } from "../../../router";
+
+import HandleLogout from "../../../hooks/useHandleLogout";
 
 
 function FormGameCategory() {
@@ -28,6 +30,7 @@ function FormGameCategory() {
 
       const { data } = await getAllQuestions(category!, levelQuestion) as AxiosResponse<any, any>
       dispatch(cleanStateQuestions())
+      dispatch(initGame())
       dispatch(setQuestions(data.questions))
       navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.GAME}`)
 
@@ -36,7 +39,7 @@ function FormGameCategory() {
       const { response } = error
 
       if (response.request?.response.includes('TokenExpiredError')) {
-        localStorage.removeItem('user')
+        HandleLogout()
         navigate(`/${PublicRoutes.LOGIN}`)
       }
 

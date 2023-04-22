@@ -1,9 +1,8 @@
-import { UserAuth } from "../../../models/user/user.types"
-import { initialValueForm, User } from "../models/interfaces"
+import { IRegister } from "../models/interfaces"
 
-function FormikValidate(values:User) {
+function FormikValidate(values: IRegister) {
 
-    const errors = {  } as initialValueForm
+    const errors = {  } as IRegister
 
     if (!values.name) {
         errors.name = 'El nombre es requerido'

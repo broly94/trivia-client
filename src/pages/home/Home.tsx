@@ -1,13 +1,13 @@
 import HomeCategories from "./components/HomeCategories"
 import HomeRankig from "./components/HomeRanking"
-import { lazy } from "react"
 import { HomeProvider } from "./context/HomeContext"
+import Navbar from "../../components/layouts/Navbar"
 
-const Navbar = lazy(() => import('../../components/layouts/Navbar'))
 
 function Home() {
 
   return (
+
     <div className="flex flex-col justify-center w-full h-full">
 
       <Navbar />
@@ -27,7 +27,9 @@ function Home() {
           </section>
 
         </div>
+
       </HomeProvider>
+    
     </div>
   )
 }

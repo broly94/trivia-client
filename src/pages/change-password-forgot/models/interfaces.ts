@@ -1,11 +1,5 @@
-export interface IinitialValue {
+export interface INewPassword {
     password: string
 }
 
-export const INITIAL_VALUE_FORM: IinitialValue = { password: '' }
-
-export interface IEmailNewPassword {
-    email: string
-}
-
-export const INITIAL_VALUE_USER_EMAIL_NEW_PASSWORD: IEmailNewPassword = { email: '' }
+export const INITIAL_VALUE_FORM_NEW_PASSWORD: INewPassword = { password: '' }

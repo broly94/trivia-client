@@ -18,7 +18,7 @@ function Private() {
     <Suspense fallback={<Loader />}>
       <LayoutPrivate>
         <Routes>
-          <Route path="/" element={<Navigate to={PrivateRoutes.HOME} />} />
+          <Route path="/" element={<Navigate to={`${PrivateRoutes.HOME}`} />} />
           <Route path={`/${PrivateRoutes.HOME}`} element={<Home />} />
           <Route path={`/${PrivateRoutes.DASHBOARD}`} element={<Dashboard />} />
           <Route path={`/${PrivateRoutes.GAME}/${PrivateRoutes.CATEGORY}/:category`} element={<SelectCategory />} />

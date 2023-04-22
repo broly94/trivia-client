@@ -19,7 +19,7 @@ export default function HomeCategories() {
                 setCategories(response.data.category)
 
             } catch (error: any | unknown | AxiosError) {
-                console.log(error)
+  
                 const { response } = error
 
                 if (response.request?.response.includes('TokenExpiredError')) {

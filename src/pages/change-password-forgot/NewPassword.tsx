@@ -1,45 +1,79 @@
-import { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { getTokenResetPassword } from "../../api/services/change-password-forgot/set-new-password.service"
-import DivContacinerClassic from "../../components/DivContanerClassic"
-import Form from "./components/FormNewPassword"
+import { AxiosError, AxiosResponse } from "axios"
 
-function FormNewPassword() {
+import { PublicRoutes } from "../../router"
+
+import { getTokenResetPassword } from "../../api/services/change-password-forgot/set-new-password.service"
+
+import ContainerForm from "../../components/ContainerForm"
+import FormNewPassword from "./components/FormNewPassword"
+import Toast from "../../components/toast/Toast"
+import Logo from "../../components/Logo"
+
+export default function NewPassword() {
 
   const query = new URLSearchParams(useLocation().search)
   const token = query.get('token')
 
-  const [data, setData] = useState('')
+  const [tokenReset, setTokenReset] = useState('')
 
   const navigate = useNavigate()
 
   useEffect(() => {
+
     const getToken = async () => {
+
       try {
-        const data = await getTokenResetPassword(token!) as AxiosResponse<any, any>
-        if (data.data.user[0].resetTokenPassword) {
-          setData(data.data.user[0].resetTokenPassword)
+
+        // Evalua la primera ves que inicia si hay un token de reseteo de password (en la base de datos), si hay un token...
+        const { data } = await getTokenResetPassword(token!) as AxiosResponse<any, any>
+
+        // Guarda el token en un estado para luego en el return evaluar si existe, que muestre el formulario
+        setTokenReset(data.token)
+
+      } catch (error: unknown) {
+
+        if (error instanceof AxiosError) {
+
+          if (error.code === "ERR_NETWORK") {
+            navigate(`/${PublicRoutes.ERROR_NETWORK}`)
+            Toast({
+              isSuccess: false,
+              messageError: "Error interno en el servidor"
+            })
+          } else {
+            Toast({
+              isSuccess: false,
+              messageError: "Ooops!!! algo salió mal"
+            })
+            navigate(`/${PublicRoutes.LOGIN}`)
+          }
+
         }
-      } catch (error) {
-        console.log(error)
-        navigate('/login')
       }
     }
+
     getToken()
+
   }, [])
 
   return (
     <>
       {
-        data !== '' &&
+        tokenReset !== '' &&
         (
           <div className="flex flex-col justify-center w-full mx-0 my-auto">
-            <h3 className="font-mono font-semibold text-4xl text-center text-zinc-700">Trivia <span className="text-yellow-300">Game</span></h3>
-            <DivContacinerClassic>
+
+            <Logo />
+
+            <ContainerForm>
+
               <h4 className="text-center font-mono font-bold text-2xl">Cambia tu  constraseña</h4>
-              <Form />
-            </DivContacinerClassic>
+            
+              <FormNewPassword />
+
+            </ContainerForm>
 
           </div>
         )
@@ -47,5 +81,3 @@ function FormNewPassword() {
     </>
   )
 }
-
-export default FormNewPassword

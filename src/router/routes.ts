@@ -1,7 +1,9 @@
-export const PublicRoutes ={
+export const PublicRoutes = {
     REGISTER: 'register',
     LOGIN: 'login',
-    SEND_EMAIL: 'send-email'
+    SEND_EMAIL: 'send-email',
+    ERROR_NETWORK: 'server-error',
+    NEW_PASSWORD: 'new-password'
 }
 
 export const PrivateRoutes = {

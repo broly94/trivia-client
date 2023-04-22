@@ -1,13 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import { decriptedRole } from '../../pages/login/utils/encripted'
+import HandleLogout from '../../hooks/useHandleLogout'
 
 function Navbar() {
-
-    const HandleSingUp = () => {
-        localStorage.removeItem('user')
-        localStorage.removeItem('role')
-        localStorage.removeItem('token')
-    }
 
     const role = localStorage.getItem('role')
     const roleParse = JSON.parse(role!)
@@ -25,7 +20,7 @@ function Navbar() {
             <ul className='flex justify-center py-7 px-10 text-zinc-50 font-bold'>
 
                 {
-                    roleUser === 'admin' ? <li className='px-1'><NavLink to="/account" className="text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:border-green-300">Admin</NavLink></li> : null
+                    roleUser === 'admin' ? <li className='px-1'><NavLink to="/account" className="text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:border-green-300">Admin</NavLink></li> : <></>
                 }
 
                 <li className='px-1'>
@@ -33,7 +28,7 @@ function Navbar() {
                 </li>
 
                 <li className='px-1'>
-                    <NavLink to="/login" className="text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:border-red-300" onClick={HandleSingUp}>Salir</NavLink>
+                    <NavLink to="/login" className="text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:border-red-300" onClick={HandleLogout()}>Salir</NavLink>
                 </li>
 
             </ul>

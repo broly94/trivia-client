@@ -1,83 +1,99 @@
-import { Formik } from "formik"
+import { AxiosError, AxiosResponse } from "axios"
 import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { AxiosResponse } from "axios"
+import { useDispatch, useSelector } from "react-redux"
+import { AppState } from "../../../redux/store/store"
+import { setLoaderButton } from "../../../redux/features/loaderButton/loaderButton.slice"
 
-import { setUser } from "../../../redux/features/user/user.slice"
 import { userAuth } from "../../../api/services/auth/auth.service"
 
-import { UserAuth } from "../../../models/user/user.types"
-import { INITIAL_VALUE_FORM } from "../models/interfaces"
-import FormikValidate from "../utils/FormikValidate"
+import { Formik } from "formik"
+import { ILogin, INITIAL_VALUE_FORM_LOGIN } from "../models/interfaces"
+import FormikValidate from "../utils/formik-validate"
 
 import { setToken } from "../../../utils/tokens.utils"
 
 import Toast from "../../../components/toast/Toast"
-
-import { ErrorMessages } from "../../../utils/components/Messages"
 import { encriptedRole } from "../utils/encripted"
-import { useState } from "react"
+
+import { ErrorMessages } from "../../../components/Messages"
 import LoaderButton from "../../../components/loader/LoaderButton"
 
+import { PrivateRoutes, PublicRoutes } from "../../../router"
 
-function Form() {
-
-    const [isValid, setIsValid] = useState(false)
+export default function FormLogin() {
 
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
 
+    const isLoaderButton = useSelector((state: AppState) => state.loaderButton)
+
     const handleClick = () => {
-        setIsValid(true)
+        dispatch(setLoaderButton(true))
     }
 
-    const handleSubmit = async (values: UserAuth, resetForm: any, setSubmitting: any) => {
+    const handleSubmit = async (values: ILogin, resetForm: any, setSubmitting: any) => {
 
         setSubmitting(true)
 
         try {
+
             const { data } = await userAuth(values) as AxiosResponse<any, any>
 
             const { role, ...rest } = data.userLogin
 
-            dispatch(setUser(data.userLogin))
-
-            localStorage.setItem('user', JSON.stringify(rest))
-
             const roleEncrypt = encriptedRole(role).toString()
 
-            localStorage.setItem('role', JSON.stringify(roleEncrypt))
+            window.localStorage.setItem('user', JSON.stringify(rest))
+
+            window.localStorage.setItem('role', JSON.stringify(roleEncrypt))
 
             setToken(data.userLogin.token)
 
-            navigate('/private/home')
-        } catch (error) {
+            navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.HOME}`)
+
+        } catch (error: unknown) {
+
             setSubmitting(false)
-            setIsValid(false)
-            resetForm()
-            Toast({
-                isSuccess: false,
-                messageError: "Ooops!!! algo salió mal. Intenta de nuevo"
-            })
+
+            if (error instanceof AxiosError) {
+
+                if (error.code === "ERR_NETWORK") {
+                    navigate(`/${PublicRoutes.ERROR_NETWORK}`)
+                    Toast({
+                        isSuccess: false,
+                        messageError: "Error interno en el servidor"
+                    })
+                } else {
+                    Toast({
+                        isSuccess: false,
+                        messageError: "Ooops!!! algo salió mal. Intenta de nuevo"
+                    })
+                }
+
+            }
         }
+
+        resetForm()
+
+        dispatch(setLoaderButton(false))
     }
 
     return (
 
-        <Formik
-            initialValues={INITIAL_VALUE_FORM}
-            validate={values => FormikValidate(values)}
-            onSubmit={(values, { resetForm, setSubmitting }) => handleSubmit(values, resetForm, setSubmitting)}
-        >{
+        <Formik initialValues={INITIAL_VALUE_FORM_LOGIN} validate={values => FormikValidate(values)} onSubmit={(values, { resetForm, setSubmitting }) => handleSubmit(values, resetForm, setSubmitting)}>
+
+            {
                 ({ values, errors, touched, handleChange, isSubmitting, handleSubmit }) => (
 
                     <form className="flex flex-col gap-5 my-2 pt-5" onSubmit={handleSubmit}>
 
                         <input type="email" name="email" placeholder="ejemplo@gmail.com" className="p-4 text-zinc-700 font-sans text-lg focus:outline-none bg-zinc-300" autoFocus onChange={handleChange} value={values.email} />
+
                         {touched.email && errors.email && <ErrorMessages message={errors.email} />}
 
                         <input type="password" name="password" placeholder="********" className="p-4 text-zinc-700 font-sans text-lg focus:outline-none bg-zinc-300" onChange={handleChange} value={values.password} />
+
                         {touched.password && errors.password && <ErrorMessages message={errors.password} />}
 
                         <button
@@ -86,10 +102,7 @@ function Form() {
                             disabled={isSubmitting}
                             onClick={handleClick}
                         >
-                            {
-                                isValid ? <LoaderButton /> : 'Ingresar'
-                                
-                            }
+                            {isLoaderButton ? <LoaderButton /> : 'Ingresar'}
                         </button>
 
                     </form>
@@ -97,8 +110,5 @@ function Form() {
             }
 
         </Formik>
-
     )
 }
-
-export default Form
