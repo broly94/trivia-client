@@ -35,7 +35,7 @@ export default function NextQuestion() {
         mySound.play()
     }
 
-    return async () => {
+    const nextQuestion = async () => {
 
         setIsNextAvailable(false)
 
@@ -56,25 +56,29 @@ export default function NextQuestion() {
 
         //Verifica si la respuesta es correcta, si es asi, asigna los puntos de la pregunta y pinta de colores las respuesta
         if (isValid) {
+        
             dispatch(setPoints(Number(points)))
             dispatch(setCorrectAnswer(1))
             lastPoints = Number(points)
             answerElement.style.backgroundColor = '#86efac';
             playSound(successQuestion)
+        
         } else {
+
             lastPoints = 0
             answerElement.style.backgroundColor = '#fca5a5';
+            playSound(errorQuestion)
+            
             // Encuentra y pinta de verde la respuesta correcta
             const correctAnswerIndex = answers.findIndex((answer) => answer.is_true)
             const correctAnswerElement = document.getElementById(`answer-${correctAnswerIndex}`) as HTMLElement;
             correctAnswerElement.style.backgroundColor = '#86efac'
-            playSound(errorQuestion)
         }
 
         //Saca el checked de la respuesta al dar al boton siguiente
         setAnswerChecked(null)
 
-        //Funcion donde se limpia el estado de las respuestas y si guarda en la base de datos los puntos del usuario
+
         const updatedPoints = collected_points + lastPoints
 
         if (questions.length == index + 1) {
@@ -89,4 +93,6 @@ export default function NextQuestion() {
             setIsNextAvailable(true)
         }, 2500)
     }
+
+    return nextQuestion
 }

@@ -21,8 +21,11 @@ export default function Game() {
   window.addEventListener('popstate', handleBackButton);
 
   return (
+    
     <div className="flex justify-center w-full">
+      
       <Main />
+    
     </div>
   )
 

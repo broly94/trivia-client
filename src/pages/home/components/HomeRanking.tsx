@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { useHomeContext } from "../context/HomeContext"
 import { getRank } from "../../../api/services/home/home.service"
-import { AxiosError, AxiosResponse } from "axios"
+import { AxiosResponse } from "axios"
 import { useNavigate } from "react-router-dom"
-import { PublicRoutes } from "../../../router"
+import useTokenExpiredError from "../../../hooks/useHandleTokenExpiredError"
 
 export default function HomeRankig() {
 
@@ -11,22 +11,18 @@ export default function HomeRankig() {
 
     const navigate = useNavigate()
 
-    const user = localStorage.getItem("user")
-    const idUser: number = JSON.parse(user!).id
+    const handleTokenExpiredError = useTokenExpiredError()
+
+    const user = window.localStorage.getItem("user")
+    const idUser = JSON.parse(user!).id
 
     useEffect(() => {
         const getAllRank = async () => {
             try {
                 const response = await getRank() as AxiosResponse<any, any>
                 setRank(response.data.users)
-            } catch (error: any | unknown | AxiosError) {
-                console.log(error)
-                const { response } = error
-
-                if (response.request?.response.includes('TokenExpiredError')) {
-                    localStorage.removeItem('user')
-                    navigate(`/${PublicRoutes.LOGIN}`)
-                }
+            } catch (error: unknown) {
+                handleTokenExpiredError(error, navigate)
             }
         }
         getAllRank()

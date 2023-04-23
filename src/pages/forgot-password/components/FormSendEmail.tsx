@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { AxiosError, AxiosResponse } from "axios"
+import { AxiosResponse } from "axios"
 
 import { useDispatch, useSelector } from "react-redux"
 import { AppState } from "../../../redux/store/store"
@@ -14,20 +14,18 @@ import FormikValidate from "../utils/formik-validate"
 
 import { ErrorMessages } from "../../../components/Messages"
 import LoaderButton from "../../../components/loader/LoaderButton"
-import Toast from "../../../components/toast/Toast"
 
-import { PublicRoutes } from "../../../router"
+import useErrorNetwork from "../../../hooks/useHandleErrorNetwork"
+import useLoaderButtonTrue from "../../../hooks/useLoaderButtonTrue"
 
 export default function FormSendEmail() {
+
+    const isLoaderButton = useSelector((state: AppState) => state.loaderButton)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const isLoaderButton = useSelector((state: AppState) => state.loaderButton)
-
-    const handleClick = () => {
-        dispatch(setLoaderButton(true))
-    }
+    const handleErrorNetwork = useErrorNetwork()
 
     const handleSubmit = async (values: ISendEmail, resetForm: any, setSubmitting: any) => {
 
@@ -35,27 +33,15 @@ export default function FormSendEmail() {
 
         try {
 
+            //Mensajes de envio en la promise del send email service
             await sendEmail(values.email) as AxiosResponse<any, any>
 
         } catch (error: unknown) {
 
             setSubmitting(false)
 
-            if (error instanceof AxiosError) {
-
-                if (error.code === "ERR_NETWORK") {
-                    navigate(`/${PublicRoutes.ERROR_NETWORK}`)
-                    Toast({
-                        isSuccess: false,
-                        messageError: "Error interno en el servidor"
-                    })
-                } else {
-                    Toast({
-                        isSuccess: false,
-                        messageError: "Ooops!!! algo salió mal. Intenta de nuevo"
-                    })
-                }
-            }
+            handleErrorNetwork(error, navigate)
+            
         }
 
         resetForm()
@@ -79,7 +65,7 @@ export default function FormSendEmail() {
                             className="border-2 border-gray-800 p-2 text-lg font-semibold font-sans hover:bg-gray-800 hover:text-white transition-colors"
                             type="submit"
                             disabled={isSubmitting}
-                            onClick={handleClick}
+                            onClick={useLoaderButtonTrue()}
                         >
                             {isLoaderButton ? <LoaderButton /> : "Enviar"}
                         </button>

@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios"
+import { AxiosResponse } from "axios"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { AppState } from "../../../redux/store/store"
@@ -18,19 +18,19 @@ import { encriptedRole } from "../utils/encripted"
 import { ErrorMessages } from "../../../components/Messages"
 import LoaderButton from "../../../components/loader/LoaderButton"
 
-import { PrivateRoutes, PublicRoutes } from "../../../router"
+import { PrivateRoutes } from "../../../router"
+
+import useLoaderButtonTrue from "../../../hooks/useLoaderButtonTrue"
+import useErrorNetwork from "../../../hooks/useHandleErrorNetwork"
 
 export default function FormLogin() {
 
-    const dispatch = useDispatch()
-
-    const navigate = useNavigate()
-
     const isLoaderButton = useSelector((state: AppState) => state.loaderButton)
 
-    const handleClick = () => {
-        dispatch(setLoaderButton(true))
-    }
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const handleErrorNetwork = useErrorNetwork()
 
     const handleSubmit = async (values: ILogin, resetForm: any, setSubmitting: any) => {
 
@@ -56,22 +56,8 @@ export default function FormLogin() {
 
             setSubmitting(false)
 
-            if (error instanceof AxiosError) {
+            handleErrorNetwork(error, navigate)
 
-                if (error.code === "ERR_NETWORK") {
-                    navigate(`/${PublicRoutes.ERROR_NETWORK}`)
-                    Toast({
-                        isSuccess: false,
-                        messageError: "Error interno en el servidor"
-                    })
-                } else {
-                    Toast({
-                        isSuccess: false,
-                        messageError: "Ooops!!! algo salió mal. Intenta de nuevo"
-                    })
-                }
-
-            }
         }
 
         resetForm()
@@ -100,7 +86,7 @@ export default function FormLogin() {
                             className="border-2 border-gray-800 p-2 text-lg font-semibold font-sans hover:bg-gray-800 hover:text-white transition-colors"
                             type="submit"
                             disabled={isSubmitting}
-                            onClick={handleClick}
+                            onClick={useLoaderButtonTrue()}
                         >
                             {isLoaderButton ? <LoaderButton /> : 'Ingresar'}
                         </button>

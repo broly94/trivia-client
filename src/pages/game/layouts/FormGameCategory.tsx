@@ -1,57 +1,68 @@
 import { useState } from "react";
-import { AxiosError, AxiosResponse } from "axios";
-
-import { useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom"
 import { getAllQuestions } from "../../../api/services/game/game.service";
+
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../../redux/store/store";
 import { setQuestions, cleanStateQuestions, initGame } from "../../../redux/features/game/game.slice";
 
-import { PrivateRoutes, PublicRoutes } from "../../../router";
+import { setLoaderButton } from "../../../redux/features/loaderButton/loaderButton.slice";
 
-import HandleLogout from "../../../hooks/useHandleLogout";
+import useErrorNetwork from "../../../hooks/useHandleErrorNetwork";
+import useTokenExpiredError from "../../../hooks/useHandleTokenExpiredError";
+import useLoaderButtonTrue from "../../../hooks/useLoaderButtonTrue";
 
+import LoaderButton from "../../../components/loader/LoaderButton";
 
-function FormGameCategory() {
+import { PrivateRoutes } from "../../../router";
 
-  const [level, setLevel] = useState({ level: 'BASIC' })
+export default function FormGameCategory() {
 
+  const isLoaderButton = useSelector((state: AppState) => state.loaderButton)
+  
+  const [level, setLevel] = useState("BASIC")
+  
   const { category } = useParams()
-
+  
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleErrorNetwork = useErrorNetwork()
+  const handleTokenExpiredError = useTokenExpiredError()
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLevel(e.target.value)
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     e.preventDefault()
 
-    const levelQuestion = level.level
-
     try {
 
-      const { data } = await getAllQuestions(category!, levelQuestion) as AxiosResponse<any, any>
-      dispatch(cleanStateQuestions())
-      dispatch(initGame())
-      dispatch(setQuestions(data.questions))
-      navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.GAME}`)
+      if (category) {
 
-    } catch (error: any | unknown | AxiosError) {
+        const { data } = await getAllQuestions(category, level)
+        dispatch(cleanStateQuestions())
+        dispatch(initGame())
+        dispatch(setQuestions(data.questions))
+        navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.GAME}`)
 
-      const { response } = error
-
-      if (response.request?.response.includes('TokenExpiredError')) {
-        HandleLogout()
-        navigate(`/${PublicRoutes.LOGIN}`)
       }
 
+    } catch (error: unknown) {
+
+      handleErrorNetwork(error, navigate)
+      handleTokenExpiredError(error, navigate)
+      
     }
-  }
 
-  const handleChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setLevel({ level: e.target.value })
-  }
+    dispatch(setLoaderButton(false))
 
+  }
 
   return (
+
     <form onSubmit={handleSubmit} className="flex flex-col mx-0 my-auto gap-5">
 
       <div className="flex flex-row gap-5 justify-center">
@@ -65,10 +76,14 @@ function FormGameCategory() {
         </select>
       </div>
 
-      <button type="submit" className="border-2 border-zinc-600 p-2 text-lg font-semibold font-sans hover:bg-green-300 hover:text-black transition-colors">Iniciar juego</button>
+      <button
+        type="submit"
+        className="border-2 border-zinc-600 p-2 text-lg font-semibold font-sans hover:bg-green-300 hover:text-black transition-colors"
+        onClick={useLoaderButtonTrue()}
+      >
+        {isLoaderButton ? <LoaderButton /> : "Iniciar juego"}
+      </button>
 
     </form>
   )
 }
-
-export default FormGameCategory

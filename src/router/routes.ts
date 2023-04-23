@@ -3,7 +3,8 @@ export const PublicRoutes = {
     LOGIN: 'login',
     SEND_EMAIL: 'send-email',
     ERROR_NETWORK: 'server-error',
-    NEW_PASSWORD: 'new-password'
+    NEW_PASSWORD: 'new-password',
+    NOT_FOUND: 'not-found'
 }
 
 export const PrivateRoutes = {

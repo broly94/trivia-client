@@ -1,22 +1,24 @@
+import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
-import { Formik } from "formik"
 
 import { deleteTokenResetPassword, setNewPassword } from '../../../api/services/change-password-forgot/set-new-password.service'
 
-import { INewPassword, INITIAL_VALUE_FORM_NEW_PASSWORD } from "../models/interfaces"
-
+import { Formik } from "formik"
 import FormikValidate from "../utils/formik-validate"
 
-import { ErrorMessages } from "../../../components/Messages"
 
+import { ErrorMessages } from "../../../components/Messages"
 import Toast from "../../../components/toast/Toast"
-import { PublicRoutes } from "../../../router"
-import { AxiosError } from "axios"
-import { useDispatch, useSelector } from "react-redux"
-import { setLoaderButton } from "../../../redux/features/loaderButton/loaderButton.slice"
-import { AppState } from "../../../redux/store/store"
 import LoaderButton from "../../../components/loader/LoaderButton"
 
+import { INewPassword, INITIAL_VALUE_FORM_NEW_PASSWORD } from "../models/interfaces"
+import { setLoaderButton } from "../../../redux/features/loaderButton/loaderButton.slice"
+import { AppState } from "../../../redux/store/store"
+
+import useLoaderButtonTrue from "../../../hooks/useLoaderButtonTrue"
+import useErrorNetwork from "../../../hooks/useHandleErrorNetwork"
+
+import { PublicRoutes } from "../../../router"
 
 export default function FormNewPassword() {
 
@@ -27,12 +29,9 @@ export default function FormNewPassword() {
     const isLoaderButton = useSelector((state: AppState) => state.loaderButton)
 
     const navigate = useNavigate()
-
     const dispatch = useDispatch()
 
-    const handleClick = () => {
-        dispatch(setLoaderButton(true))
-    }
+    const handleErrorNetwork = useErrorNetwork()
 
     const handleSubmit = (values: INewPassword, resetForm: any, setSubmitting: any) => {
 
@@ -55,22 +54,8 @@ export default function FormNewPassword() {
 
             setSubmitting(false)
 
-            if (error instanceof AxiosError) {
-
-                if (error.code === "ERR_NETWORK") {
-                    navigate(`/${PublicRoutes.ERROR_NETWORK}`)
-                    Toast({
-                        isSuccess: false,
-                        messageError: "Error interno en el servidor"
-                    })
-                } else {
-                    navigate(`/${PublicRoutes.LOGIN}`)
-                    Toast({
-                        isSuccess: false,
-                        messageError: 'Error al cambiar la contraseña de esta cuenta'
-                    })
-                }
-            }
+            handleErrorNetwork(error, navigate)
+     
         }
 
         resetForm()
@@ -95,7 +80,7 @@ export default function FormNewPassword() {
                             className="border-2 border-gray-800 p-2 text-lg font-semibold font-sans hover:bg-gray-800 hover:text-white transition-colors"
                             type="submit"
                             disabled={isSubmitting}
-                            onClick={handleClick}
+                            onClick={useLoaderButtonTrue()}
                         >
                             {isLoaderButton ? <LoaderButton /> : "Cambiar"}
                         </button>

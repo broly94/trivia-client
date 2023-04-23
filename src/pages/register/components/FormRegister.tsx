@@ -18,17 +18,17 @@ import { ErrorMessages } from "../../../components/Messages"
 import Toast from "../../../components/toast/Toast"
 import LoaderButton from "../../../components/loader/LoaderButton"
 
+import useLoaderButtonTrue from "../../../hooks/useLoaderButtonTrue"
+import useErrorNetwork from "../../../hooks/useHandleErrorNetwork"
+
 export default function FormRegister() {
 
     const isLoaderButton = useSelector((state: AppState) => state.loaderButton)
 
     const navigate = useNavigate()
-
     const dispatch = useDispatch()
 
-    const handleClick = () => {
-        dispatch(setLoaderButton(true))
-    }
+    const handleErrorNetwork = useErrorNetwork()
 
     const handleSubmit = async (values: IRegister, resetForm: any, setSubmitting: any) => {
 
@@ -49,34 +49,21 @@ export default function FormRegister() {
 
             setSubmitting(false)
 
-            if (error instanceof AxiosError) {
+            handleErrorNetwork(error, navigate)
 
-                if (error.code === "ERR_NETWORK") {
-                    navigate(`/${PublicRoutes.ERROR_NETWORK}`)
-                    Toast({
-                        isSuccess: false,
-                        messageError: "Error interno en el servidor"
-                    })
-                }
+            if (error instanceof AxiosError) {
 
                 if (error.response !== undefined) {
 
-                    const err = `${error.response.data.message}`
+                    const messageError = `${error.response.data.message}`
 
-                    if (err.includes('The email or name are already in use')) {
+                    if (messageError.includes('The email or name are already in use')) {
                         Toast({
                             isSuccess: false,
                             messageError: 'El usuario o el email ya estan en uso'
                         })
-                    } else {
-                        Toast({
-                            isSuccess: false,
-                            messageError: "Ooops!!! algo salió mal. Intenta de nuevo"
-                        })
                     }
-
                 }
-
             }
         }
 
@@ -107,7 +94,7 @@ export default function FormRegister() {
                         {touched.password && errors.password && <ErrorMessages message={errors.password} />}
 
                         <button
-                            onClick={handleClick}
+                            onClick={useLoaderButtonTrue()}
                             className="border-2 border-gray-800 p-2 text-lg font-semibold font-sans hover:bg-gray-800 hover:text-white transition-colors"
                             type="submit"
                             disabled={isSubmitting}
