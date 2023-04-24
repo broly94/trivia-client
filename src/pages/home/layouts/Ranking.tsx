@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios"
 import { useNavigate } from "react-router-dom"
 import useTokenExpiredError from "../../../hooks/useHandleTokenExpiredError"
 
-export default function HomeRankig() {
+export default function Rankig() {
 
     const { rank, setRank } = useHomeContext()
 

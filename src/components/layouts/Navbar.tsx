@@ -9,7 +9,7 @@ function Navbar() {
     const roleUser = decriptedRole(roleParse)
 
     return (
-        <nav className='flex justify-center flex-wrap w-full mx-0 my-auto fixed top-0 lg:top-10 bg-gray-800 z-50'>
+        <nav className='flex justify-center flex-wrap w-full mx-0 my-auto bg-gray-800 z-50'>
 
             <div className='flex justify-center ml-10'>
                 <NavLink to="/" className="font-mono font-semibold text-3xl text-center text-zinc-50 self-center mr-3">

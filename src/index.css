@@ -2,9 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    height: 100%;
+}
+
 body {
     background-color: #EEEEEE;
-    /* background-color: #18181b; */
+    height: 100%;
 }
 
 #navigation a.active {
