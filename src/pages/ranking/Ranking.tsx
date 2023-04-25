@@ -1,9 +1,9 @@
 import { useEffect } from "react"
-import { useHomeContext } from "../context/HomeContext"
-import { getRank } from "../../../api/services/home/home.service"
+import { useHomeContext } from "../home/context/HomeContext"
+import { getRank } from "../../api/services/home/home.service"
 import { AxiosResponse } from "axios"
 import { useNavigate } from "react-router-dom"
-import useTokenExpiredError from "../../../hooks/useHandleTokenExpiredError"
+import useTokenExpiredError from "../../hooks/useHandleTokenExpiredError"
 
 export default function Rankig() {
 

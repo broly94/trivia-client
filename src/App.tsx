@@ -18,7 +18,7 @@ function App() {
 
   return (
     <Suspense fallback={<Loader />}>
-      <main className="flex h-full w-full">
+      <main className="flex h-screen w-full">
 
         <BrowserRouter>
 

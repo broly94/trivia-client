@@ -10,7 +10,7 @@ export default function ListCategories() {
         <Link
           key={cat.id}
           to={`/private/game/category/${cat.name}`}
-          className="p-5 transition-colors hover:bg-green-300 hover:shadow-xl uppercase font-bold text-base text-gray-900 border-2 border-zinc-600"
+          className="p-5 transition-colors hover:bg-green-300 hover:shadow-xl uppercase text-center font-bold text-base text-gray-900 border-2 border-zinc-600"
         >
           {cat.name}
         </Link>
