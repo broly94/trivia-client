@@ -1,45 +1,34 @@
-import { useContext, createContext, useState } from "react"
-import { ICategory, IRank } from "../models/interfaces"
+import { useContext, createContext, useState } from 'react';
+import { ICategory } from '../models/interfaces';
 
 interface IContextProps {
-    rank: IRank[]
-    setRank: (rank: IRank[]) => void,
-    categories: ICategory[],
-    setCategories: (categories: ICategory[]) => void
+	categories: ICategory[];
+	setCategories: (categories: ICategory[]) => void;
 }
 
 const HomeContext = createContext<IContextProps>({
-    rank: {} as IRank[],
-    setRank: () => {},
-    categories: {} as ICategory[],
-    setCategories: () => {}
-})
+	categories: {} as ICategory[],
+	setCategories: () => {},
+});
 
 export const useHomeContext = (): IContextProps => {
-    const context = useContext(HomeContext)
+	const context = useContext(HomeContext);
 
-    if (!context) {
-        throw new Error("El provider is not available")
-    }
+	if (!context) {
+		throw new Error('El provider is not available');
+	}
 
-    return context
-}
+	return context;
+};
 
 interface IProviderProps {
-    children: JSX.Element | JSX.Element[]
+	children: JSX.Element | JSX.Element[];
 }
 
 export const HomeProvider = ({ children }: IProviderProps) => {
+	const [categories, setCategories] = useState<ICategory[]>([]);
 
-    const [rank, setRank] = useState<IRank[]>([])
+	const contextValue = { categories, setCategories };
 
-    const [categories, setCategories] = useState<ICategory[]>([])
-
-    const contextValue = {rank, setRank, categories, setCategories}
-
-    return (
-        <HomeContext.Provider value={contextValue}>
-            {children}
-        </HomeContext.Provider>
-    )
-}
+	return <HomeContext.Provider value={contextValue}>{children}</HomeContext.Provider>;
+};

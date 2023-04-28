@@ -1,18 +1,18 @@
 export interface ICategory {
-    id: number
-    name: string
+	id: number;
+	name: string;
 }
 
 export interface IRank {
-    id: number
-    name: string
-    points: number
+	id: number;
+	name: string;
+	points: number;
 }
 
 export interface ICategoryInstance {
-    categories: ICategory[]
+	categories: ICategory[];
 }
 
-export const  InitialState: ICategoryInstance = {
-    categories: []
-}
+export const InitialState: ICategoryInstance = {
+	categories: [],
+};

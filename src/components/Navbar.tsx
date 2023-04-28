@@ -1,27 +1,30 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { decriptedRole } from '../pages/login/utils/encripted';
 import HandleLogout from '../hooks/useHandleLogout';
 import { PrivateRoutes, PublicRoutes } from '../router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getRank } from '../api/services/home/home.service';
-import { AxiosResponse } from 'axios';
 import useTokenExpiredError from '../hooks/useHandleTokenExpiredError';
+import { getUserRol } from '../utils/get-localstorage.util';
+import { IUserLogin } from '../models/user/user.types';
 
 function Navbar() {
+	const [dataUser, setDataUser] = useState({} as IUserLogin);
+
 	const navigate = useNavigate();
 	const handleTokenExpiredError = useTokenExpiredError();
 
-	const getRolUser = () => {
-		const role = window.localStorage.getItem('role');
-		const roleParse = JSON.parse(role!);
-		return decriptedRole(roleParse);
-	};
+	const role = getUserRol();
 
 	useEffect(() => {
 		const getAllRank = async () => {
 			try {
-				const response = (await getRank()) as AxiosResponse<any, any>;
-				console.log(response);
+				const { data } = await getRank();
+				setDataUser({
+					id: data.user.id,
+					name: data.user.name,
+					points: data.user.points,
+					position: data.user.position,
+				});
 			} catch (error: unknown) {
 				handleTokenExpiredError(error, navigate);
 			}
@@ -39,16 +42,16 @@ function Navbar() {
 			</div>
 
 			<div className='flex flex-col-reverse justify-center items-center gap-3 flex-1'>
-				<h3 className='font-mono font-semibold text-sm text-center text-zinc-50 self-center mr-3'>
-					Puntos: 25000
+				<h3 className='font-sans font-semibold text-sm text-center text-zinc-50 self-center mr-3'>
+					Puntos: <span className='text-yellow-300'>{dataUser.points}</span>
 				</h3>
-				<h3 className='font-mono font-semibold text-sm text-center text-zinc-50 self-center mr-3'>
-					Posicion: #1
+				<h3 className='font-sans font-semibold text-sm text-center text-zinc-50 self-center mr-3'>
+					Posicion: <span className='text-yellow-300'>#{dataUser.position}</span>
 				</h3>
 			</div>
 
 			<ul className='flex flex-row justify-center items-center text-zinc-50 font-bold flex-1'>
-				{getRolUser() === 'admin' ? (
+				{role === 'admin' ? (
 					<li className='px-1'>
 						<NavLink
 							to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.ADMIN}`}

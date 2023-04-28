@@ -1,3 +1,10 @@
+export interface IUserLogin {
+	id: number;
+	name: string;
+	points: number;
+	position: number;
+}
+
 export interface UserState {
 	id: number;
 	name: string;
