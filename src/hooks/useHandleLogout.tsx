@@ -14,7 +14,6 @@ export default function HandleLogout() {
 		dispatch(setCategory([]));
 		dispatch(finishGame());
 		dispatch(cleanStateQuestions());
-		return;
 	};
 
 	return handleLogout;

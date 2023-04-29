@@ -10,8 +10,8 @@ export default function Rankig() {
 		<div className='flex flex-col w-full h-screen justify-center items-center'>
 			<Navbar />
 
-			<div className='flex flex-col items-center w-full md:w-3/4 p-3 my-3 hover:shadow-2xl overflow-x-scroll transition-all shadow-slate-900'>
-				<div className='back-button flex flex-row m-5'>
+			<div className='flex flex-col items-center w-full md:w-3/4 p-3 my-3 overflow-y-auto overflow-x-hidden'>
+				<div className='back-button flex flex-row m-5 w-full'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
 						viewBox='0 0 20 20'

@@ -30,7 +30,7 @@ export default function TableRank() {
 	}, []);
 
 	return (
-		<table className='w-full h-full text-sm text-left border-2 border-gray-800 overflow-y-hidden'>
+		<table className='w-full h-full text-sm text-left border-2 border-gray-800'>
 			<thead className='text-base text-gray-200 uppercase bg-gray-500 border-b-2 border-zinc-400'>
 				<tr className='text-center mb-3'>
 					<th scope='col' className='font-extrabold p-5'>

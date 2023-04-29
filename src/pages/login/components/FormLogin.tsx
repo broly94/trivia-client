@@ -10,8 +10,6 @@ import { Formik } from 'formik';
 import { ILogin, INITIAL_VALUE_FORM_LOGIN } from '../models/interfaces';
 import FormikValidate from '../utils/formik-validate';
 
-import { setToken } from '../../../utils/tokens.utils';
-
 import { encriptedRole } from '../utils/encripted';
 
 import { ErrorMessages } from '../../../components/Messages';

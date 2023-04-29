@@ -1,11 +1,14 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import HandleLogout from '../hooks/useHandleLogout';
-import { PrivateRoutes, PublicRoutes } from '../router';
 import { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+
 import { getRank } from '../api/services/home/home.service';
+import HandleLogout from '../hooks/useHandleLogout';
+
 import useTokenExpiredError from '../hooks/useHandleTokenExpiredError';
 import { getUserRol } from '../utils/get-localstorage.util';
 import { IUserLogin } from '../models/user/user.types';
+
+import { PrivateRoutes, PublicRoutes } from '../router';
 
 function Navbar() {
 	const [dataUser, setDataUser] = useState({} as IUserLogin);
