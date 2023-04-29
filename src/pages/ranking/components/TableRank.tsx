@@ -30,16 +30,16 @@ export default function TableRank() {
 	}, []);
 
 	return (
-		<table className='w-full text-sm text-left border-2 border-gray-800'>
+		<table className='w-full h-full text-sm text-left border-2 border-gray-800 overflow-y-hidden'>
 			<thead className='text-base text-gray-200 uppercase bg-gray-500 border-b-2 border-zinc-400'>
 				<tr className='text-center mb-3'>
-					<th scope='col' className='font-extrabold px-6 py-3'>
+					<th scope='col' className='font-extrabold p-5'>
 						Posicion
 					</th>
-					<th scope='col' className='font-extrabold px-6 py-3'>
+					<th scope='col' className='font-extrabold p-5'>
 						Usuario
 					</th>
-					<th scope='col' className='font-extrabold px-6 py-3'>
+					<th scope='col' className='font-extrabold p-5'>
 						Puntos
 					</th>
 				</tr>
@@ -49,17 +49,17 @@ export default function TableRank() {
 				{rank.map((r, index) => (
 					<tr
 						className={`hover:cursor-pointer border-2 border-gray-800 ${
-							r.id == id ? 'bg-red-200' : 'bg-slate-100'
+							r.id == id ? 'bg-green-200' : 'bg-slate-100'
 						}`}
 						key={r.id}
 					>
-						<th scope='row' className='px-6 py-4 text-gray-900 font-bold text-center'>
+						<th scope='row' className='text-gray-900 font-bold text-center py-5'>
 							<span className='text-gray-700'>#{index + 1}</span>
 						</th>
-						<td className='px-6 py-4 text-center font-bold text-base text-gray-900'>
+						<td className='text-center font-bold text-base text-gray-900'>
 							<span className='text-gray-700'>{r.name}</span>
 						</td>
-						<td className='px-6 py-4 text-center font-bold text-base text-gray-900'>
+						<td className='text-center font-bold text-base text-gray-900'>
 							<span className='text-gray-800'>{r.points}</span>
 						</td>
 					</tr>

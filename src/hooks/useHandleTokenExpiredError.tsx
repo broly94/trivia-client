@@ -11,7 +11,6 @@ export default function TokenExpiredError() {
 				if (response.request.response.includes('TokenExpiredError')) {
 					window.localStorage.clear();
 					navigate(`/${PublicRoutes.LOGIN}`);
-					return;
 				}
 			}
 		}

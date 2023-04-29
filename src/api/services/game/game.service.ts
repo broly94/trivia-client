@@ -1,27 +1,22 @@
-import { getToken } from '../../../utils/tokens.utils'
-import axios from '../../base.axios'
-
+import { getUserLogin } from '../../../utils/get-localstorage.util';
+import axios from '../../base.axios';
+console.log(`Bearer ${getUserLogin().token}`);
 export const getAllQuestions = async (category: string, level: string) => {
-    const { token } = getToken()
-
-    return await axios.get(`/api/questions?level=${level}&category=${category}`, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
-
-}
+	return await axios.get(`/api/questions?level=${level}&category=${category}`, {
+		headers: {
+			Authorization: `Bearer ${getUserLogin().token}`,
+		},
+	});
+};
 
 export const setPointsUser = async (points: number) => {
-    
-    const { token } = getToken()
-    
-    const user = localStorage.getItem('user')
-    const userId = JSON.parse(user!).id
-
-    await axios.put('/api/set-points', {id: userId, points}, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    })
-}
+	await axios.put(
+		'/api/set-points',
+		{ id: getUserLogin().id, points },
+		{
+			headers: {
+				Authorization: `Bearer ${getUserLogin().token}`,
+			},
+		}
+	);
+};
