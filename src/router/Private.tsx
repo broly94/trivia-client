@@ -12,6 +12,7 @@ const Game = lazy(() => import('../pages/game/Game'));
 const SelectCategory = lazy(() => import('../pages/game/SelectCategory'));
 const GameStatus = lazy(() => import('../pages/game/layouts/GameStatus'));
 const Home = lazy(() => import('../pages/home/Home'));
+const Settings = lazy(() => import('../pages/settings/Settings'));
 
 function Private() {
 	return (
@@ -21,6 +22,7 @@ function Private() {
 					<Route path='/' element={<Navigate to={`${PrivateRoutes.HOME}`} />} />
 					<Route path={`/${PrivateRoutes.HOME}`} element={<Home />} />
 					<Route path={`/${PrivateRoutes.RANK}`} element={<Ranking />} />
+					<Route path={`${PrivateRoutes.SETTINGS}`} element={<Settings />} />
 					<Route
 						path={`/${PrivateRoutes.GAME}/${PrivateRoutes.CATEGORY}/:category`}
 						element={<SelectCategory />}
