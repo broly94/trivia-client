@@ -4,6 +4,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Loader from '../components/loader/Loader.loader';
 import { PrivateRoutes } from './routes';
 import GameRouter from './GameRouter';
+import FormDataUser from '../pages/settings/components/FormDataUser';
+import FormChangePassword from '../pages/settings/components/FormChangePassword';
 
 const LayoutPrivate = lazy(() => import('../components/layouts/LayoutPrivate'));
 const NotFound = lazy(() => import('../pages/not-found/404'));
@@ -22,11 +24,13 @@ function Private() {
 					<Route path='/' element={<Navigate to={`${PrivateRoutes.HOME}`} />} />
 					<Route path={`/${PrivateRoutes.HOME}`} element={<Home />} />
 					<Route path={`/${PrivateRoutes.RANK}`} element={<Ranking />} />
-					<Route path={`${PrivateRoutes.SETTINGS}`} element={<Settings />} />
+					<Route path={`${PrivateRoutes.SETTINGS}/*`} element={<Settings />} />
 					<Route
 						path={`/${PrivateRoutes.GAME}/${PrivateRoutes.CATEGORY}/:category`}
 						element={<SelectCategory />}
 					/>
+
+					{/* <Route path='/settings/*' element={<Navigate to={'/settings'} />} /> */}
 
 					{/** Si el usuario no le da a iniciar juego, lo redirecciona al Home */}
 					<Route element={<GameRouter />}>

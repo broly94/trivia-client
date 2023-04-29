@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import FormikValidate from '../utils/FormikValidate';
 
-export default function FormSettings() {
+export default function FormDataUser() {
 	const handleSubmit = (values: any, setSubmitting: any) => {};
 
 	return (
