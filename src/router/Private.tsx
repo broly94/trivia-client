@@ -30,8 +30,6 @@ function Private() {
 						element={<SelectCategory />}
 					/>
 
-					{/* <Route path='/settings/*' element={<Navigate to={'/settings'} />} /> */}
-
 					{/** Si el usuario no le da a iniciar juego, lo redirecciona al Home */}
 					<Route element={<GameRouter />}>
 						<Route path={`/${PrivateRoutes.GAME}`} element={<Game />} />
