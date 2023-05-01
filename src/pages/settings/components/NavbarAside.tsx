@@ -13,11 +13,9 @@ export default function NavbarAside() {
 					<li key={index} className='p-1 w-full'>
 						<NavLink
 							className={({ isActive, isPending }) =>
-								`${
-									isActive ? 'bg-gray-900 text-white border-green-400 hover:green-gray-700' : ''
-								} ${
+								`${isActive ? 'bg-yellow-500' : ''} ${
 									isPending ? 'pending' : ''
-								} hover:shadow-md hover:shadow-gray-700 w-full block p-3 text-center text-gray-200 text-sm font-semibold uppercase font-sans border-2 border-gray-200 hover:text-white hover:bg-gray-900 transition-colors `
+								} w-full block p-3 text-center  text-sm font-bold uppercase font-sans bg-yellow-300 text-gray-800 hover:shadow-md transition-colors `
 							}
 							to={data.url}
 						>
