@@ -45,7 +45,6 @@ export default function FormLogin() {
 			navigate(`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.HOME}`);
 		} catch (error: unknown) {
 			setSubmitting(false);
-
 			handleErrorNetwork(error, navigate);
 		}
 
@@ -58,9 +57,7 @@ export default function FormLogin() {
 		<Formik
 			initialValues={INITIAL_VALUE_FORM_LOGIN}
 			validate={(values) => FormikValidate(values)}
-			onSubmit={(values, { resetForm, setSubmitting }) =>
-				handleSubmit(values, resetForm, setSubmitting)
-			}
+			onSubmit={(values, { resetForm, setSubmitting }) => handleSubmit(values, resetForm, setSubmitting)}
 		>
 			{({ values, errors, touched, handleChange, isSubmitting, handleSubmit }) => (
 				<form className='flex flex-col gap-5 my-2 pt-5' onSubmit={handleSubmit}>

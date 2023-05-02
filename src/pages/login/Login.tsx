@@ -13,10 +13,7 @@ export default function Login() {
 
 			<p className='font-sans text-sm pt-5 text-center mb-3'>
 				¿No tenes cuenta?{' '}
-				<Link
-					to={`/${PublicRoutes.REGISTER}`}
-					className='font-sans text-md text-gray-700 font-bold'
-				>
+				<Link to={`/${PublicRoutes.REGISTER}`} className='font-sans text-md text-gray-700 font-bold'>
 					Registrate
 				</Link>
 			</p>
@@ -29,10 +26,7 @@ export default function Login() {
 
 			<p className='font-sans text-sm pt-5 text-center'>
 				¿Perdiste tu contraseña?{' '}
-				<Link
-					to={`/${PublicRoutes.SEND_EMAIL}`}
-					className='font-sans text-md text-gray-700 font-bold'
-				>
+				<Link to={`/${PublicRoutes.SEND_EMAIL}`} className='font-sans text-md text-gray-700 font-bold'>
 					Recuperarla
 				</Link>
 			</p>
