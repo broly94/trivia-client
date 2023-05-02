@@ -5,6 +5,7 @@ import { PublicRoutes } from '../../router';
 
 import FormLogin from './components/FormLogin';
 import Logo from '../../components/Logo';
+import { config } from '../../config/config';
 
 export default function Login() {
 	return (
