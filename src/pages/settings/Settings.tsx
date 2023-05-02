@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Navbar from '../../components/Navbar';
-import FormDataUser from './components/FormDataUser';
-import FormChangePassword from './components/FormChangePassword';
-import NavbarAside from './components/NavbarAside';
+
 import NotFound from '../not-found/404';
+import Navbar from '../../components/Navbar';
+
+import { FormChangePassword, FormDataUser, NavbarAside } from './components';
 
 export default function Settings() {
 	return (

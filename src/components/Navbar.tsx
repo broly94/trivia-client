@@ -45,20 +45,20 @@ function Navbar() {
 			</div>
 
 			<div className='flex flex-col-reverse justify-center items-center gap-3 flex-1'>
-				<h3 className='font-sans font-semibold text-sm text-center text-zinc-50 self-center mr-3'>
+				<h3 className='font-sans font-semibold text-md text-center text-zinc-50 self-center mr-3'>
 					Puntos: <span className='text-yellow-300'>{dataUser.points}</span>
 				</h3>
-				<h3 className='font-sans font-semibold text-sm text-center text-zinc-50 self-center mr-3'>
+				<h3 className='font-sans font-semibold text-md text-center text-zinc-50 self-center mr-3'>
 					Posicion: <span className='text-yellow-300'>#{dataUser.position}</span>
 				</h3>
 			</div>
 
-			<ul className='flex flex-row justify-center items-center text-zinc-50 font-bold flex-1'>
+			<ul className='flex flex-row flex-wrap justify-center items-center text-zinc-50 font-bold flex-1 md:py-5'>
 				{role === 'admin' ? (
 					<li className='px-1'>
 						<NavLink
 							to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.ADMIN}`}
-							className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 rounded-t-md hover:text-gray-800 hover:bg-green-300 transition-colors'
+							className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:text-gray-800 hover:bg-green-300 transition-colors'
 						>
 							Admin
 						</NavLink>
@@ -69,8 +69,17 @@ function Navbar() {
 
 				<li className='px-1'>
 					<NavLink
+						to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.HOME}`}
+						className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:text-gray-800 hover:bg-yellow-300 transition-colors'
+					>
+						Inicio
+					</NavLink>
+				</li>
+
+				<li className='px-1'>
+					<NavLink
 						to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.RANK}`}
-						className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4  rounded-t-md hover:text-gray-800 hover:bg-yellow-300 transition-colors'
+						className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:text-gray-800 hover:bg-yellow-300 transition-colors'
 					>
 						Ranking
 					</NavLink>
@@ -79,7 +88,7 @@ function Navbar() {
 				<li className='px-1'>
 					<NavLink
 						to={`/${PrivateRoutes.PRIVATE}/${PrivateRoutes.SETTINGS}`}
-						className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4  rounded-t-md hover:text-gray-800 hover:bg-yellow-300 transition-colors'
+						className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:text-gray-800 hover:bg-yellow-300 transition-colors'
 					>
 						Configuracion
 					</NavLink>
@@ -88,7 +97,7 @@ function Navbar() {
 				<li className='px-1'>
 					<NavLink
 						to={`/${PublicRoutes.LOGIN}`}
-						className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4  rounded-t-md hover:text-gray-800 hover:bg-red-300 transition-colors'
+						className='text-lg hover:transition-colors py-5 px-1 font-semibold font-sans hover:border-b-4 hover:text-gray-800 hover:bg-red-300 transition-colors'
 						onClick={HandleLogout()}
 					>
 						Salir

@@ -19,8 +19,7 @@ export default function TableRank() {
 	useEffect(() => {
 		const getRank = async () => {
 			try {
-				const { data } = (await getAllRank()) as AxiosResponse<any, any>;
-				console.log(data.users);
+				const { data } = await getAllRank();
 				setRank(data.users);
 			} catch (error: unknown) {
 				handleTokenExpiredError(error, navigate);
@@ -47,12 +46,7 @@ export default function TableRank() {
 
 			<tbody>
 				{rank.map((r, index) => (
-					<tr
-						className={`hover:cursor-pointer border-2 border-gray-800 ${
-							r.id == id ? 'bg-green-200' : 'bg-slate-100'
-						}`}
-						key={r.id}
-					>
+					<tr className={`hover:cursor-pointer border-2 border-gray-800 ${r.id == id ? 'bg-green-200' : 'bg-slate-100'}`} key={r.id}>
 						<th scope='row' className='text-gray-900 font-bold text-center py-5'>
 							<span className='text-gray-700'>#{index + 1}</span>
 						</th>
