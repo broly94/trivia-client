@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { config } from '../config/config';
 
 const baseAxios = axios.create({
-	baseURL: `${import.meta.env.VITE_BASE_ENDPOINT}`,
-	// baseURL: 'http://localhost:3002',
+	baseURL: `${config.base_url}`,
 	withCredentials: false,
 	headers: {
 		'Content-Type': 'application/json',
