@@ -8,6 +8,7 @@ import Logo from '../../components/Logo';
 import { config } from '../../config/config';
 
 export default function Login() {
+	console.log(import.meta.env.VITE_BASE_ENDPOINT);
 	return (
 		<div className='flex flex-col justify-center w-full mx-0 my-auto'>
 			<Logo />

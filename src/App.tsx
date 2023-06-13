@@ -5,9 +5,6 @@ import { BrowserRouter } from 'react-router-dom';
 /** Router */
 import { AuthGuard, NotGuard, Private, Public, PrivateRoutes } from './router';
 
-/** Layouts */
-// import Layout from "./components/layouts/Layout"
-
 /** Toasttify */
 import { ToastContainer } from 'react-toastify';
 
